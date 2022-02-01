@@ -12,7 +12,6 @@ binDir        = "bin"
 
 requires "nim >= 1.6.0"
 requires "klymene"
-requires "httpbeast >= 0.4.0"
 
 include ./tasks/dev
 include ./tasks/prod
