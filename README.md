@@ -13,9 +13,9 @@
 - [x] Open Source under `MIT` license
 
 ## Why?
-Because Front-end Development or Design Prototyping phases should not depend on a back-end server or real data. Also, there is nothing really dedicated for Front-end Developers or Designers. Most people are using Node, which is a resource-hungry solution, requires lots of dependencies and time for setup.
+Because Front-end Development or Design Prototyping phases should not depend on a heavy back-end server. Also, there is nothing really dedicated for Front-end Developers or Designers. Most people are using NodeJS, which is a resource-hungry solution, requires lots of dependencies and time for setup 👎
 
-**💋 Madam is a command line interface server, compiled into a single 1MB binary file. Fully written in Nim language**
+<strong>💋 Madam is a command line interface server compiled into a single 1MB binary file ✨ Fully written in 👑 Nim language</strong>
 
 ## Installing
 Madam is currently available for **OS X** and **Linux distributions** only. You can compile Madam by yourself, or get a binary from /releases.
