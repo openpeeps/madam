@@ -2,15 +2,20 @@
 
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
-- [ ] Serve Static Assets 📦
+- [x] Serve Static Assets 📦
 - [ ] Configuration via `madam.yml`
 - [ ] Routes Management via `madam.router.yml`
 - [ ] Supports all HTTP verbs, `GET`, `POST`, `HEAD`, etc.
 - [ ] Madam Skins (Templating Handler) `layout`, `view`, `partials`
 - [ ] Static Websites Builder
-- [x] Made for Front-end Development and Prototyping
+- [x] Made for **Design Prototyping** and **Front-end Development**
 - [x] Works on **Linux** and **OS X**
 - [x] Open Source under `MIT` license
+
+## Why?
+Because Front-end Development or Design Prototyping phases should not depend on a back-end server or real data. Also, there is nothing really dedicated for Front-end Developers or Designers. Most people are using Node, which is a resource-hungry solution, requires lots of dependencies and time for setup.
+
+**💋 Madam is a command line interface server, compiled into a single 1MB binary file. Fully written in Nim language**
 
 ## Installing
 Madam is currently available for **OS X** and **Linux distributions** only. You can compile Madam by yourself, or get a binary from /releases.
