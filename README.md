@@ -7,15 +7,12 @@
 - [ ] Routes Management via `madam.router.yml`
 - [ ] Supports all HTTP verbs, `GET`, `POST`, `HEAD`, etc.
 - [ ] Madam Skins (Templating Handler) `layout`, `view`, `partials`
-- [ ] Static Websites Builder
+- [ ] Static Website Builder
 - [x] Made for **Design Prototyping** and **Front-end Development**
 - [x] Works on **Linux** and **OS X**
 - [x] Open Source under `MIT` license
 
-## Why?
-Because Front-end Development or Design Prototyping phases should not depend on a heavy back-end server. Also, there is nothing really dedicated for Front-end Developers or Designers. Most people are using NodeJS, which is a resource-hungry solution, requires lots of dependencies and time for setup 👎
-
-<strong>💋 Madam is a command line interface server compiled into a single 1MB binary file ✨ Fully written in 👑 Nim language</strong>
+<strong>💋 Madam is a command line interface server compiled into a single 1MB binary file ✨ Open Source | Fully written in 👑 Nim language</strong>
 
 ## Installing
 Madam is currently available for **OS X** and **Linux distributions** only. You can compile Madam by yourself, or get a binary from /releases.
