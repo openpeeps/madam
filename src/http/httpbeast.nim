@@ -57,14 +57,9 @@ type
 
     HttpBeastDefect* = ref object of Defect
 
-const
-    serverInfo = "HttpBeast"
+const serverInfo = "Madam"
 
-proc initSettings*(port: Port = Port(8080),
-                                     bindAddr: string = "",
-                                     numThreads: int = 0,
-                                     domain = Domain.AF_INET,
-                                     reusePort = true): Settings =
+proc initSettings*(port: Port = Port(8080), bindAddr: string = "", numThreads: int = 0, domain = Domain.AF_INET, reusePort = true): Settings =
     Settings(
         port: port,
         bindAddr: bindAddr,
@@ -125,8 +120,7 @@ template handleClientClosure(selector: Selector[Data],
     else:
         return
 
-proc onRequestFutureComplete(theFut: Future[void],
-                                                         selector: Selector[Data], fd: int) =
+proc onRequestFutureComplete(theFut: Future[void], selector: Selector[Data], fd: int) =
     if theFut.failed:
         raise theFut.error
 
@@ -298,8 +292,7 @@ proc processEvents(selector: Selector[Data],
                     data.bytesSent = 0
                     data.sendQueue.setLen(0)
                     data.data.setLen(0)
-                    selector.updateHandle(fd.SocketHandle,
-                                                                {Event.Read})
+                    selector.updateHandle(fd.SocketHandle, {Event.Read})
             else:
                 assert false
 
