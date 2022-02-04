@@ -16,6 +16,10 @@
 - [x] Open Source under `MIT` license
 - [x] Pew pew pew! ZWIFF! 💋
 
+
+## 🥳 Best for
+Prototyping. Showcase. JavaScript, HTML, CSS projects, libraries or packages. Also best for testers and designers. Pew pew again!
+
 ## 💅 Installing
 Madam is currently available for **OS X** and **Linux distributions** only. You can compile Madam by yourself, or get the latest version from [GitHub releases](https://github.com/openpeep/madam/releases).
 
