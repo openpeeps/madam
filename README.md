@@ -1,4 +1,4 @@
-<p align="center"><img src=".github/madam.png" width="140px"><br>This is Madame 💅 A simple and fast local web server for prototyping and front-end development</strong></p>
+<p align="center"><img src=".github/madam.png" width="140px"><br>Hell😍oo Madam! <strong>A Lightweight & Fast Local Web Server for Design Prototyping and Front-end Development</strong><br> Pew pew pew! Cichi-blowww Boom!</p>
 
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
