@@ -2,37 +2,38 @@
 
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
+- [x] < 1MB binary app
+- [x] Install once, run anytime, as many servers you need 👌
+- [x] No code required
 - [x] Serve Static Assets 📦
 - [ ] Configuration via `madam.yml`
 - [ ] Routes Management via `madam.router.yml`
 - [ ] Supports all HTTP verbs, `GET`, `POST`, `HEAD`, etc.
 - [ ] Madam Skins (Templating Handler) `layout`, `view`, `partials`
-- [ ] Static Websites Builder
+- [ ] Static Website Builder
 - [x] Made for **Design Prototyping** and **Front-end Development**
 - [x] Works on **Linux** and **OS X**
 - [x] Open Source under `MIT` license
+- [x] Pew pew pew! ZWIFF! 💋
 
-## Why?
-Because Front-end Development or Design Prototyping phases should not depend on a back-end server or real data. Also, there is nothing really dedicated for Front-end Developers or Designers. Most people are using Node, which is a resource-hungry solution, requires lots of dependencies and time for setup.
+## 💅 Installing
+Madam is currently available for **OS X** and **Linux distributions** only. You can compile Madam by yourself, or get the latest version from [GitHub releases](https://github.com/openpeep/madam/releases).
 
-💋 **Madam is a command line interface server, compiled into a single 1MB binary file. Fully written in Nim language ** 👑
-
-## Installing
-Madam is currently available for **OS X** and **Linux distributions** only. You can compile Madam by yourself, or get a binary from /releases.
-
-Setup Madam to your `PATH` and start do your thing!
+Setup Madam to your `PATH` and do the do 🤓 Better said, do the blue! 😎
 ```zsh
 ln -s ~/path/to/your/madam /usr/local/bin
 ```
 
-## Madame Commands
+## ✨ Madam Commands
 ```zsh
-Madam 0.1.0 💅 A local web server for Prototyping and Front-end Development
-For updates, tips and tricks go to github.com/openpeep/madam
+Madam 💋 A Lightweight & Fast Local Web Server for
+Design Prototyping 🎨 and Front-end Development 🌈
+👉 Info, updates and bugs: https://github.com/openpeep/madam
 
 Usage:
-   start [--quiet]                Start a new local server. Run in background with --quiet flag
-   build                          Compile to a Static Website
+   init                           Create a new Madam configuration file from CLI
+   run [--verbose]                Run local server. Use verbose flag for tracking requests
+   build                          Build current project to Static HTML Website
 
 Options:
   -h --help                       Show this screen.
@@ -68,10 +69,15 @@ assets:
 ```
 
 ## Madam Skins
-Madam skins is the way you can stay **DRY**, brining `layouts`, `views` and `partials` logic to your project.
+The way you can stay **DRY**. Madam brings `layouts`, `views` and `partials` logic to your project.
 
 #### Create the layout
-Create your first layout with the HTML meta data, containing a tag `{{page_content}}` and save it as `base.html`
+Create your first layout with the HTML meta code, place `{{page_content}}` tag inside `<body>` and save it as `base.html`.
+
+Base is the default layout file required by Madam. You can create unlimited layout pages by simply creating files under `/layouts` directory.
+
+**👉 Tips: Madam is able to auto discover all HTML files from `views`, `layouts` and `pages` directories.**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -88,18 +94,14 @@ Create your first layout with the HTML meta data, containing a tag `{{page_conte
 
 ### Create the first page
 
-Create the `index.html` and save it to your `./example/pages/index.html`.
-```html
-@layout: "base"
-<h1>This is Madam</h1>
-```
+_todo_
 
 
 ## Roadmap
-finish the fukin job
+_todo_
 
 ### ❤ Contributions
-If you like this project you can contribute to Madam by opening new issues, fixing bugs, contribute with code, ideas and you can even support us via [PayPal address pay@openpeep.ro](https://www.paypal.com/donate/?hosted_button_id=RJK3ZTDWPL55C) 🥰
+If you like this project you can contribute to Madam by opening new issues, fixing bugs, contribute with code, ideas and you can even [donate us via PayPal address](https://www.paypal.com/donate/?hosted_button_id=RJK3ZTDWPL55C) 🥰
 
 ### 👑 Discover Nim language
 <strong>What's Nim?</strong> Nim is a statically typed compiled systems programming language. It combines successful concepts from mature languages like Python, Ada and Modula. [Find out more about Nim language](https://nim-lang.org/)
