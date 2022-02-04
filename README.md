@@ -1,4 +1,4 @@
-<p align="center">This is Madame 💅 A simple and fast local web server for prototyping and front-end development</strong></p>
+<p align="center"><img src=".github/madam.png" width="140px"><br>This is Madame 💅 A simple and fast local web server for prototyping and front-end development</strong></p>
 
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
@@ -40,8 +40,19 @@ Run `madam init` in your project directory and setup your `madam.yml` via comman
 ```yaml
 name: "Awesome Madam"
 path: "./example"                   # path to your HTML files
-routes:                             # define your custom routes by key/value pointing to a HTML file
-    index: "index.html"
+
+# Templating paths.
+# Note that, templating paths are automatically
+# prefixed with the project path provided abve.
+# 
+# For example "views" Madam will try load all
+# html files inside of "./example/views/*"
+templating:
+    views: "views"
+    layouts: "layouts"
+    pages: "pages"
+routes:                             # custom routes by key/value (route/filename)
+    index: "index.html"             # index is reserved for root pages
     about: "about.html"
 
 # Setup Static Assets to serve any
@@ -50,6 +61,34 @@ assets:
     source: "./dist/assets/*"        # Path on disk for indexing the static assets
     public: "/assets"                # Public route for accessing the static assets
 ```
+
+## Madam Skins
+Madam skins is the way you can stay **DRY**, brining `layouts`, `views` and `partials` logic to your project.
+
+#### Create the layout
+Create your first layout with the HTML meta data, containing a tag `{{page_content}}` and save it as `base.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+{{page_content}}
+</body>
+</html>
+```
+
+### Create the first page
+
+Create the `index.html` and save it to your `./example/pages/index.html`.
+```html
+@layout: "base"
+<h1>This is Madam</h1>
+```
+
 
 ## Roadmap
 finish the fukin job
