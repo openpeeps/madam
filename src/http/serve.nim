@@ -12,38 +12,44 @@ from std/strutils import `%`, startsWith, replace
 
 import ../assets, ../configurator
 
-proc startHttpServer*(Config: Configurator) =
+# proc isSecondaryPage(): bool =
+#     return false
+
+# proc getPageContents(): string =
+#     readFile(filepath)
+
+proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, body: string] =
+    let assetsEndpoint = "/assets/"
+    let errorNotFoundTuple = (code: Http404, body: error.getErrorPage)
+    var path = route
+    case path
+    of "/":
+        let indexFilePath = config.getViewsPath("index.html")
+        echo indexFilePath
+        if fileExists(indexFilePath):
+            return (code: Http200, body: readFile(indexFilePath))
+        else:
+            return errorNotFoundTuple
+    else:
+        if path.startsWith(assetsEndpoint):
+            path = replace(path, assetsEndpoint)
+            if config.getAssets().hasFile(path):
+                return (code: Http200, body: config.getAssets().getFile(path))
+            else:
+                return errorNotFoundTuple
+        else: return errorNotFoundTuple
+
+proc startHttpServer*(config: Configurator) =
     ## Start a Madam Server instance using current configuration
     let
         currentProject = getCurrentDir()
         localAddress = "127.0.0.1"
-        assetsEndpoint = "/assets/"
 
     proc onRequest(req: Request): Future[void] =
         if req.httpMethod == some(HttpGet):
-            var path = req.path.get()
-            case path
-            of "/":
-                let filepath = currentProject & "/example/pages/index.html"
-                if fileExists(filepath):
-                    let indexPage = readFile(filepath)
-                    req.send(indexPage)
-                else:
-                    req.send(Http404, error.getErrorPage)
-            of "/full":
-                let filepath = currentProject & "/example/pages/full.html"
-                let indexPage = readFile(filepath)
-                req.send(indexPage)
-            else:
-                if path.startsWith(assetsEndpoint):
-                    # Handle public assets
-                    path = replace(path, assetsEndpoint)
-                    if Config.getAssets().hasFile(path):
-                        let fileContent = Config.getAssets().getFile(path)
-                        req.send(fileContent)
-                    else: req.send(Http404, error.getErrorPage)
-                # elif isSecondaryPage(path):
-
-                else: req.send(Http404, error.getErrorPage)
+            let (code, body) = httpGetRequest(req.path.get(), config)
+            req.send(code, body)
+        else:
+            req.send(Http404, "nope")
 
     run(onRequest, initSettings(port=Port(1234), bindAddr=localAddress))
