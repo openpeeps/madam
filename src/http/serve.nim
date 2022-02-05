@@ -9,8 +9,7 @@ import std/[options,asyncdispatch]
 import ./httpbeast, ./error
 from std/os import getCurrentDir, fileExists
 from std/strutils import `%`, startsWith, replace
-
-import ../assets, ../configurator
+import ../assets, ../configurator, ../routes
 
 # proc isSecondaryPage(): bool =
 #     return false
@@ -20,24 +19,24 @@ import ../assets, ../configurator
 
 proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, body: string] =
     let assetsEndpoint = "/assets/"
-    let errorNotFoundTuple = (code: Http404, body: error.getErrorPage)
     var path = route
+    var response = (code: Http404, body: error.getErrorPage)
     case path
     of "/":
         let indexFilePath = config.getViewsPath("index.html")
-        echo indexFilePath
         if fileExists(indexFilePath):
-            return (code: Http200, body: readFile(indexFilePath))
-        else:
-            return errorNotFoundTuple
+            response = (code: Http200, body: readFile(indexFilePath))
     else:
         if path.startsWith(assetsEndpoint):
+            # try serve static assets if is in path
             path = replace(path, assetsEndpoint)
             if config.getAssets().hasFile(path):
-                return (code: Http200, body: config.getAssets().getFile(path))
-            else:
-                return errorNotFoundTuple
-        else: return errorNotFoundTuple
+                response = (code: Http200, body: config.getAssets().getFile(path))
+        elif config.router().getExists(path):
+            let routeObject = config.router().getRoute(HttpGet, path)
+            if fileExists(routeObject.getFile()):
+                response = (code: Http200, body: readFile(routeObject.getFile()))
+    return response
 
 proc startHttpServer*(config: Configurator) =
     ## Start a Madam Server instance using current configuration

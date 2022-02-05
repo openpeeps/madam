@@ -12,6 +12,7 @@ binDir        = "bin"
 
 requires "nim >= 1.6.0"
 requires "klymene"
+requires "nyml"
 
 include ./tasks/dev
 include ./tasks/prod

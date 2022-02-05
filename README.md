@@ -53,12 +53,12 @@ name: "Awesome Madam"
 path: "./example"                   # path to your HTML files
 
 # Templating paths.
-# Note that, templating paths are automatically
+# Note that, templates paths are automatically
 # prefixed with the project path provided abve.
 # 
 # For example "views" Madam will try load all
 # html files inside of "./example/views/*"
-templating:
+templates:
     views: "views"
     layouts: "layouts"
     pages: "pages"
@@ -66,8 +66,7 @@ routes:                             # custom routes by key/value (route/filename
     index: "index.html"             # index is reserved for root pages
     about: "about.html"
 
-# Setup Static Assets to serve any
-# kind of static files via Madam
+# Setup Static Assets to serve any kind of static files via Madam
 assets:
     source: "./dist/assets/*"        # Path on disk for indexing the static assets
     public: "/assets"                # Public route for accessing the static assets

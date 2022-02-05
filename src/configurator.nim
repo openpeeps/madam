@@ -41,18 +41,21 @@ proc getTemplatesPath[T: Configurator](config: T, contentType: string, filePath:
     return config.getPath(dirpath & "/" & filePath)
 
 proc getViewsPath*[T: Configurator](config: T, path: string): string =
+    ## Get the path that points to views directory
     return config.getTemplatesPath("views", "/" & path)
 
 proc getLayoutsPath*[T: Configurator](config: T, path: string): string =
+    ## Get the path that points to layouts directory
     return config.getTemplatesPath("layouts", "/" & path)
 
 proc getPartialsPath*[T: Configurator](config: T, path: string): string =
+    ## Get the path that points to partials directory
     return config.getTemplatesPath("partials", "/" & path)
 
 proc getPort*[T: Configurator](config: T): int =
     return config.port
 
-proc getRoutes*[T: Configurator](config: T): Router =
+proc router*[T: Configurator](config: T): Router =
     return config.routes
 
 proc getAssets*[T: Configurator](config: T): Assets =
@@ -66,7 +69,7 @@ proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, rou
             display("👉 \"$1\" file could not be found. (ignored)" % [filename], indent=4)
         # elif mime.getMimetype(replace(filePath.splitFile().ext, ".", "")) != "text/html":
             # display("👉 \"$1\" file has a different extension. Only \".html\" or \".htm\" allowed. (ignored)" % [filename], indent=4)
-        else: router.get(route, file.getStr())
+        else: router.addGet(route, filePath)
     return router
 
 proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, assetsNode: JsonNode): B =
