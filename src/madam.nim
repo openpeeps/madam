@@ -15,11 +15,14 @@ const version = "0.1.0"
 const binName = "madam"
 
 let sheet = """
-# Madam $2 💅 A local web server for Prototyping and Front-end Development #
+# Madam $2 💅 A lightwiehgt local web server for Front-end Development #
 # For updates, tips and tricks go to github.com/openpeep/madam #
 
 $3
-  $1 run [--quiet]                  # Start Madam server in current project directory #
+  $1 run [--quiet]                  # Run local server. Use quiet flag for running in background #
+  $1 build                          # Compile current project to Static HTML Website #
+  $1 bundle                         # Bundle project for back-end implementation phase #
+  $1 faker                          # Generate fake data #
 
 $4
   -h --help                       # Show this screen. #

@@ -1,23 +1,17 @@
 import std/[options,asyncdispatch]
-import ./httpbeast, ./assets, ./error
+import ./httpbeast, ./error
 from std/os import getCurrentDir, fileExists
 from std/strutils import `%`, startsWith, replace
 
-# proc isSecondaryPage(path: string) =
+import ../assets, ../configurator
 
 
-proc startHttpServer*(localPort: int = 1234) =
+proc startHttpServer*(Config: Configurator) =
+    ## Start a Madam Server instance using current configuration
     let
         currentProject = getCurrentDir()
         localAddress = "127.0.0.1"
         assetsEndpoint = "/assets/"
-
-    var assets = Assets.init()
-    assets.addFile("traho.develop.css", getCurrentDir() & "/example/traho.develop.css")
-    assets.addFile("app.css", getCurrentDir() & "/example/app.css")
-    assets.addFile("sweetsyntax.min.js", getCurrentDir() & "/dist/sweetsyntax.min.js")
-    assets.addFile("logo.png", getCurrentDir() & "/example/logo.png")
-    assets.addFile("sweetworker.js", getCurrentDir() & "/example/sweetworker.js")
 
     proc onRequest(req: Request): Future[void] =
         if req.httpMethod == some(HttpGet):
@@ -38,12 +32,12 @@ proc startHttpServer*(localPort: int = 1234) =
                 if path.startsWith(assetsEndpoint):
                     # Handle public assets
                     path = replace(path, assetsEndpoint)
-                    if assets.hasFile(path):
-                        let fileContent = assets.getFile(path)
+                    if Config.getAssets().hasFile(path):
+                        let fileContent = Config.getAssets().getFile(path)
                         req.send(fileContent)
                     else: req.send(Http404, error.getErrorPage)
                 # elif isSecondaryPage(path):
 
                 else: req.send(Http404, error.getErrorPage)
 
-    run(onRequest, initSettings(port=Port(localPort), bindAddr=localAddress))
+    run(onRequest, initSettings(port=Port(1234), bindAddr=localAddress))
