@@ -1,5 +1,5 @@
-# This is Madam 💅 A simple and fast local web server
-# for prototyping and front-end development.
+# Madam 💋 A lightweight local web server for
+# Design Prototyping 🎨 and Front-end Development 🌈
 # 
 # MIT License
 # Copyright (c) 2022 George Lemon from OpenPeep

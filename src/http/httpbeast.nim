@@ -1,3 +1,14 @@
+# Madam 💋 A lightweight local web server for
+# Design Prototyping 🎨 and Front-end Development 🌈
+# 
+# Httpbeast is a highly performant multi-threaded HTTP 1.1 server
+# written by Dominik Picheta
+# https://github.com/dom96/httpbeast
+# 
+# MIT License
+# Copyright (c) 2022 George Lemon from OpenPeep
+# https://github.com/openpeep/madam
+
 import std/[
     options, logging,
     selectors, net, nativesockets, os, httpcore,

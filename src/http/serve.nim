@@ -1,10 +1,16 @@
+# Madam 💋 A lightweight local web server for
+# Design Prototyping 🎨 and Front-end Development 🌈
+# 
+# MIT License
+# Copyright (c) 2022 George Lemon from OpenPeep
+# https://github.com/openpeep/madam
+
 import std/[options,asyncdispatch]
 import ./httpbeast, ./error
 from std/os import getCurrentDir, fileExists
 from std/strutils import `%`, startsWith, replace
 
 import ../assets, ../configurator
-
 
 proc startHttpServer*(Config: Configurator) =
     ## Start a Madam Server instance using current configuration
