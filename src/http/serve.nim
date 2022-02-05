@@ -32,8 +32,8 @@ proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, 
             path = replace(path, assetsEndpoint)
             if config.getAssets().hasFile(path):
                 response = (code: Http200, body: config.getAssets().getFile(path))
-        elif config.router().getExists(path):
-            let routeObject = config.router().getRoute(HttpGet, path)
+        elif config.routes.getExists(path):
+            let routeObject = config.routes.getRoute(HttpGet, path)
             if fileExists(routeObject.getFile()):
                 response = (code: Http200, body: readFile(routeObject.getFile()))
     return response

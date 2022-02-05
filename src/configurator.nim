@@ -19,7 +19,7 @@ type
         path: string
         port: int
         templates: tuple[layouts, views, partials: string]
-        routes: Router
+        routes*: Router
         assets: Assets
 
 proc getName*[T: Configurator](config: T): string =
@@ -54,9 +54,6 @@ proc getPartialsPath*[T: Configurator](config: T, path: string): string =
 
 proc getPort*[T: Configurator](config: T): int =
     return config.port
-
-proc router*[T: Configurator](config: T): Router =
-    return config.routes
 
 proc getAssets*[T: Configurator](config: T): Assets =
     return config.assets
