@@ -1,4 +1,4 @@
-<p align="center"><img src=".github/madam.png" width="140px"><br><strong>Madam 💋 A lightweight local web server for Design Prototyping 🎨 and Front-end Development 🌈</strong><br> Pew pew pew! ZWIFF! Boom!</p>
+<p align="center"><img src=".github/madam.png" width="140px"><br><strong>Madam 💋 A lightweight local web server for 🎨 Design Prototyping • 🌈 Front-end Development</strong><br>Pew pew pew! ZWIFF! Boom!</p>
 
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
