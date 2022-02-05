@@ -1,4 +1,4 @@
-<p align="center"><img src=".github/madam.png" width="140px"><br>Hell😍oo Madam! <strong>A Lightweight & Fast Local Web Server for<br>Design Prototyping 🎨 and Front-end Development 🌈</strong><br> Pew pew pew! ZWIFF! Boom!</p>
+<p align="center"><img src=".github/madam.png" width="140px"><br><strong>Madam 💋 A lightweight local web server for Design Prototyping 🎨 and Front-end Development 🌈</strong><br> Pew pew pew! ZWIFF! Boom!</p>
 
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
@@ -123,7 +123,7 @@ _todo_
 - [ ] Madam GUI
 
 ### ❤ Contributions
-If you like this project you can contribute to Madam by opening new issues, fixing bugs, contribute with code, ideas and you can even [donate us via PayPal address](https://www.paypal.com/donate/?hosted_button_id=RJK3ZTDWPL55C) 🥰
+If you like this project you can contribute to Madam by opening new issues, fixing bugs, contribute with code, ideas and you can even [donate via PayPal address](https://www.paypal.com/donate/?hosted_button_id=RJK3ZTDWPL55C) 🥰
 
 ### 👑 Discover Nim language
 <strong>What's Nim?</strong> Nim is a statically typed compiled systems programming language. It combines successful concepts from mature languages like Python, Ada and Modula. [Find out more about Nim language](https://nim-lang.org/)
