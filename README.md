@@ -10,6 +10,7 @@
 - [ ] Routes Management via `madam.router.yml`
 - [ ] Supports all HTTP verbs, `GET`, `POST`, `HEAD`, etc.
 - [ ] Madam Skins (Templating Handler) `layout`, `view`, `partials`
+- [ ] Multi-threading
 - [ ] Static Website Builder
 - [x] Made for **Design Prototyping** and **Front-end Development**
 - [x] Works on **Linux** and **OS X**
