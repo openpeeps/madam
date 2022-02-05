@@ -98,12 +98,29 @@ Base is the default layout file required by Madam. You can create unlimited layo
 ```
 
 ### Create the first page
-
 _todo_
 
 
 ## Roadmap
-_todo_
+#### 0.1.0
+- [x] Create logo
+- [x] Embedding Httpbeast
+- [ ] Routes Handler
+- [ ] Static Assets Handler
+- [x] `init` command
+- [ ] `run` command with `--verbose` flag
+- [ ] `build` command
+- [ ] Multi-threading support
+- [ ] Auto-discover HTML files in `layouts`, `views` and `partials`
+- [ ] Support for all `HTTP` verbs
+- [ ] YAML responses for `POST`, `PUT`, etc.
+- [ ] GitHub Workflow Action for [Cross Compilation and Release](https://github.com/nim-lang/Nim/wiki/BuildServices#8-cross-compilation-and-release)
+
+#### 0.2.0
+- [ ] Fake content generator
+
+### 0.3.0
+- [ ] Madam GUI
 
 ### ❤ Contributions
 If you like this project you can contribute to Madam by opening new issues, fixing bugs, contribute with code, ideas and you can even [donate us via PayPal address](https://www.paypal.com/donate/?hosted_button_id=RJK3ZTDWPL55C) 🥰
@@ -114,5 +131,5 @@ If you like this project you can contribute to Madam by opening new issues, fixi
 <strong>Why Nim?</strong> Performance, fast compilation and C-like freedom. We want to keep code clean, readable, concise, and close to our intention. Also a very good language to learn in 2022.
 
 ### 🎩 License
-Madam is an Open Source Software released under `MIT` license. Developed by [OpenPeep](https://github.com/openpeep).<br>
+Madam is an Open Source Software released under `MIT` license. [Developed by Humans from OpenPeep](https://github.com/openpeep).<br>
 Copyright &copy; 2022 OpenPeep & Contributors &mdash; All rights reserved.
