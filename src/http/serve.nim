@@ -52,7 +52,6 @@ proc startHttpServer*(config: Configurator) =
     let
         currentProject = getCurrentDir()
         localAddress = "127.0.0.1"
-
     proc onRequest(req: Request): Future[void] =
         let path = req.path.get()
         var logger = Logger()

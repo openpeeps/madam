@@ -105,7 +105,7 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
             name: doc.get("name").getStr(),
             path: doc.get("path").getStr(),
             port: doc.get("port").getInt(),
-            logger: doc.get("logs").getBool(),
+            logger: doc.get("console.logger").getBool(),
             templates: (
                 layouts: doc.get("templates.layouts").getStr(),
                 views: doc.get("templates.views").getStr(),

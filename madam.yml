@@ -1,7 +1,6 @@
 name: "Madam"
 path: "./example"                   # path to your HTML files
 port: 1230
-logs: true
 templates:
     views: "views"
     layouts: "layouts"
@@ -16,3 +15,8 @@ routes:
 assets:
     source: "./dist/assets/*"        # Path on disk for indexing the static assets
     public: "/assets"                # Public route for accessing the static assets
+
+# Customize console output
+console:
+    logger: true                    # Enable http request logger
+    clear: true                     # Clear previous console output on request
