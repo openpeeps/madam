@@ -6,7 +6,7 @@
 # https://github.com/openpeep/madam
 
 import std/[options,asyncdispatch]
-import ./httpbeast, ./error
+import ./httpbeast, ./defaults
 from std/os import getCurrentDir, fileExists
 from std/strutils import `%`, startsWith, replace
 import ../assets, ../configurator, ../routes
@@ -20,12 +20,14 @@ import ../assets, ../configurator, ../routes
 proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, body: string] =
     let assetsEndpoint = "/assets/"
     var path = route
-    var response = (code: Http404, body: error.getErrorPage)
+    var response = (code: Http404, body: defaults.getErrorPage)
     case path
     of "/":
         let indexFilePath = config.getViewsPath("index.html")
         if fileExists(indexFilePath):
             response = (code: Http200, body: readFile(indexFilePath))
+        else:
+            response = (code: Http200, body: defaults.getWelcomeScreen)
     else:
         if path.startsWith(assetsEndpoint):
             # try serve static assets if is in path
