@@ -77,14 +77,34 @@ proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, ass
     assets.addFile("sweetworker.js", config.getPath("/sweetworker.js"))
     return assets
 
+# proc checkRequiredFields(doc: Document): tuple[status: bool, field: string] =
+#     for field in @["name", "path", "port", "templates.layouts", "templates.views", "templates.partials"]:
+#         if doc.get(field) == JNull
+
 proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: Configurator] =
     let configFilePath = getCurrentDir() & "/" & configFile
     if not fileExists(configFilePath):
         display("👉 Could not found a \"madam.yml\" in your project.", indent=4, br="before")
         display("Generate by `madam init` command", indent=4)
         quit()
+    
+    # let required = doc.checkRequiredFields()
+    # if required.status == false:
+    #     display("Field \"$1\" is missing from your  \"madam.yml\" config" % [required.field], indent=4)
+    #     quit()
 
-    let doc = Nyml(engine: Y2J).parse(readFile(configFilePath))
+    let doc = Nyml(engine: Y2J).parse(readFile(configFilePath),
+        rules = @["name*:string", "path*:string", "port:int", "templates*:object",
+                  "templates.layouts*:string", "templates.views*:string",
+                  "templates.partials*:string"])
+    if doc.hasErrorRules():
+        let count = doc.getErrorsCount()
+        let errorWord = if count == 1: "error" else: "errors"
+        display("👉 Found $1 $2 in your Madam configuration:" % [$doc.getErrorsCount(), errorWord], indent=2)
+        for key, err in doc.getErrorRules().pairs():
+            display("• " & err.getErrorMessage(), indent=4)
+        quit()
+
     var
         routesTable = Router.init()
         assetsTable = Assets.init()
