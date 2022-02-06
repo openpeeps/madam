@@ -1,0 +1,16 @@
+name: "Madam"
+path: "./example"                   # path to your HTML files
+port: 1230
+templates:
+    views: "views"
+    layouts: "layouts"
+    partials: "partials"
+
+routes:
+    full: "full.html"
+
+# Setup Static Assets to serve any
+# kind of static files via Madam
+assets:
+    source: "./dist/assets/*"        # Path on disk for indexing the static assets
+    public: "/assets"                # Public route for accessing the static assets
