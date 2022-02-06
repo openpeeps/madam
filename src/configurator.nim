@@ -77,22 +77,13 @@ proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, ass
     assets.addFile("sweetworker.js", config.getPath("/sweetworker.js"))
     return assets
 
-# proc checkRequiredFields(doc: Document): tuple[status: bool, field: string] =
-#     for field in @["name", "path", "port", "templates.layouts", "templates.views", "templates.partials"]:
-#         if doc.get(field) == JNull
-
 proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: Configurator] =
     let configFilePath = getCurrentDir() & "/" & configFile
     if not fileExists(configFilePath):
-        display("👉 Could not found a \"madam.yml\" in your project.", indent=4, br="before")
-        display("Generate by `madam init` command", indent=4)
+        display("👉 Missing \"$1\" in your project." % [configFile], indent=2, br="before")
+        display("Generate your config with \"madam init\"", indent=4)
         quit()
     
-    # let required = doc.checkRequiredFields()
-    # if required.status == false:
-    #     display("Field \"$1\" is missing from your  \"madam.yml\" config" % [required.field], indent=4)
-    #     quit()
-
     let doc = Nyml(engine: Y2J).parse(readFile(configFilePath),
         rules = @["name*:string", "path*:string", "port:int", "templates*:object",
                   "templates.layouts*:string", "templates.views*:string",

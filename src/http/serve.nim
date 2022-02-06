@@ -53,4 +53,4 @@ proc startHttpServer*(config: Configurator) =
         else:
             req.send(Http404, "nope")
 
-    run(onRequest, initSettings(port=Port(1234), bindAddr=localAddress))
+    run(onRequest, initSettings(port=Port(config.getPort()), bindAddr=localAddress))

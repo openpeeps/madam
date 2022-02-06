@@ -1,8 +1,8 @@
 # Madam 💋 A lightweight local web server for
 # Design Prototyping 🎨 and Front-end Development 🌈
 # 
-# Httpbeast is a highly performant multi-threaded HTTP 1.1 server
-# written by Dominik Picheta
+# Httpbeast is a highly performant multi-threaded
+# HTTP 1.1 server written by Dominik Picheta
 # https://github.com/dom96/httpbeast
 # 
 # MIT License
@@ -70,7 +70,7 @@ type
 
 const serverInfo = "Madam"
 
-proc initSettings*(port: Port = Port(8080), bindAddr: string = "", numThreads: int = 0, domain = Domain.AF_INET, reusePort = true): Settings =
+proc initSettings*(port: Port = Port(8080), bindAddr: string = "", numThreads: int = 0, domain = Domain.AF_INET, reusePort = false): Settings =
     Settings(
         port: port,
         bindAddr: bindAddr,
