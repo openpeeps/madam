@@ -53,6 +53,7 @@ Run `madam init` in your project directory and setup your `madam.yml` via comman
 ```yaml
 name: "Awesome Madam"
 path: "./example"                   # path to your root HTML project
+port: 1230                          # optional | default 1010
 
 # Paths for layouts, views or partials
 # These paths are prepended with project path provided above
@@ -62,17 +63,38 @@ templates:
     views: "views"                  # directory path for views
     partials: "partials"            # directory path for partials
 
-# Add routes pointing to a HTML view
-# Note: index page is automatically discovered
+# Declare your web routes
 routes:
-    about: "about.html"
-    projects: "projects.html"
+    # Routes are separated by their Http Method
+    get: 
+        about: "about.html"
+        projects: "projects.html"
+        
+        # Want to handle custom error codes? Alright!
+        notfound: "error.html:404"
 
+        # Or maybe a middleware protected page? Easy!
+        profile: "middleware@auth(profile.html)"
+
+        # Groups are useful when working with API-like routes
+        # In this example user is accessible via localhost:1230/api/user
+        # and returns a JSON response using random generated data
+        api: 
+            user: "@yallfake.user.profile(name, email, phone, address)"
+
+# Define your custom Middlewares
+middlewares:
+    auth: true
 
 # Setup Static Assets to serve any kind of static files via Madam
 assets:
     source: "./dist/assets/*"        # Path on disk for indexing the static assets
     public: "/assets"                # Public route for accessing the static assets
+
+# Customize console output
+console:
+    logger: true                    # Enable http request logger
+    clear: true                     # Clear previous console output on request
 ```
 
 ## Madam Skins
