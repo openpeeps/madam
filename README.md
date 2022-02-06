@@ -17,6 +17,8 @@
 - [x] Open Source under `MIT` license
 - [x] Pew pew pew! ZWIFF! 💋
 
+## Why ?
+Because NodeJS environment sucks and there are no other lightweight / easy to setup alternatives.
 
 ## 🥳 Best for
 Prototyping. Showcase. JavaScript, HTML, CSS projects, libraries or packages. Also best for testers and designers. Pew pew again!
@@ -50,21 +52,22 @@ Run `madam init` in your project directory and setup your `madam.yml` via comman
 
 ```yaml
 name: "Awesome Madam"
-path: "./example"                   # path to your HTML files
+path: "./example"                   # path to your root HTML project
 
-# Templating paths.
-# Note that, templates paths are automatically
-# prefixed with the project path provided abve.
-# 
-# For example "views" Madam will try load all
-# html files inside of "./example/views/*"
+# Paths for layouts, views or partials
+# These paths are prepended with project path provided above
+# For example, layouts will point to "./example/layouts"
 templates:
-    views: "views"
-    layouts: "layouts"
-    pages: "pages"
-routes:                             # custom routes by key/value (route/filename)
-    index: "index.html"             # index is reserved for root pages
+    layouts: "layouts"              # directory path for layouts
+    views: "views"                  # directory path for views
+    partials: "partials"            # directory path for partials
+
+# Add routes pointing to a HTML view
+# Note: index page is automatically discovered
+routes:
     about: "about.html"
+    projects: "projects.html"
+
 
 # Setup Static Assets to serve any kind of static files via Madam
 assets:
