@@ -96,10 +96,10 @@ const getWelcomeScreen* = """<!DOCTYPE html>
             <div class="col">
                 <div class="logo"></div>
                 <h1 class="headline" style="text-align: center">Pew pew pew!</h1>
-                <p style="text-align: center">🧐 Looks like you haven't created a <code>index.html</code> view, yet.</p>
-                <p style="text-align: center">👉 For any updates, issues or ideas you can check <a href="https://github.com/openpeep/madam" target="_blank">Madam on GitHub</a></p>
+                <p style="text-align: center">🧐 Looks like you haven't created an <code>index.html</code> view, yet.</p>
+                <p style="text-align: center">Need help? 👉 Check <a href="https://github.com/openpeep/madam" target="_blank">Madam on GitHub</a></p>
 
-                <p style="text-align: center; line-height:normal"><br><small>Madam is an Open Source Software released under <code>MIT</code> license.<br><a href="https://github.com/openpeep">Developed by Humans from OpenPeep.</a></small></p>
+                <p style="text-align: center; line-height:normal"><br><small>Released under <code>MIT</code> license.<br>Developed by <a href="https://github.com/openpeep">Humans from OpenPeep.</a></small></p>
             </div>
         </div>
     </div>

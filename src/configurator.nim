@@ -54,20 +54,21 @@ proc getPartialsPath*[T: Configurator](config: T, path: string): string =
     return config.getTemplatesPath("partials", "/" & path)
 
 proc getPort*[T: Configurator](config: T): int = config.port
-proc hasEnabledLogger*[T: Configurator](config: T): bool = config.logs
+proc hasEnabledLogger*[T: Configurator](config: T): bool = config.logger
 
 proc getAssets*[T: Configurator](config: T): Assets =
     return config.assets
 
 proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, routes: JsonNode): B =
-    for route, file in routes.pairs():
-        let fileName = file.getStr
-        let filePath = config.getViewsPath(fileName)
-        if not filePath.fileExists():
-            display("👉 \"$1\" file could not be found. (ignored)" % [filename], indent=4)
-        # elif mime.getMimetype(replace(filePath.splitFile().ext, ".", "")) != "text/html":
-            # display("👉 \"$1\" file has a different extension. Only \".html\" or \".htm\" allowed. (ignored)" % [filename], indent=4)
-        else: router.addGet(route, filePath)
+    for k, verb in routes.pairs():
+        for route, file in verb.pairs():
+            let fileName = file.getStr
+            let filePath = config.getViewsPath(fileName)
+            if not filePath.fileExists():
+                display("👉 \"$1\" file could not be found. (ignored)" % [filename], indent=4)
+            # elif mime.getMimetype(replace(filePath.splitFile().ext, ".", "")) != "text/html":
+                # display("👉 \"$1\" file has a different extension. Only \".html\" or \".htm\" allowed. (ignored)" % [filename], indent=4)
+            else: router.addGet(route, filePath)
     return router
 
 proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, assetsNode: JsonNode): B =

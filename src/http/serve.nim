@@ -47,7 +47,7 @@ proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, 
                 response = (code: Http200, body: readFile(routeObject.getFile()))
     return response
 
-proc startHttpServer*(config: Configurator, isLoggerEnabled = false) =
+proc startHttpServer*(config: Configurator) =
     ## Start a Madam Server instance using current configuration
     let
         currentProject = getCurrentDir()
@@ -64,6 +64,6 @@ proc startHttpServer*(config: Configurator, isLoggerEnabled = false) =
             req.send(code, body)
         else:
             req.send(Http404, "nope")
-        if isLoggerEnabled:
-            display("$1 $2 ⟶ $3" % [$logger.code, $logger.verb, logger.path])
+        if config.hasEnabledLogger():
+            display("$1 $2  ➤  $3" % [$logger.code, $logger.verb, logger.path], indent=2)
     run(onRequest, initSettings(port=Port(config.getPort()), bindAddr=localAddress))
