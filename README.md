@@ -6,7 +6,7 @@
 - [x] Install once, run anytime, as many servers you need 👌
 - [x] No code required
 - [x] Serve Static Assets 📦
-- [ ] Configuration via `madam.yml`
+- [x] Configuration via `madam.yml`
 - [ ] Routes Management via `madam.router.yml`
 - [ ] Supports all HTTP verbs, `GET`, `POST`, `HEAD`, etc.
 - [ ] Madam Skins (Templating Handler) `layout`, `view`, `partials`
