@@ -10,12 +10,19 @@ import ./httpbeast, ./defaults
 from std/os import getCurrentDir, fileExists
 from std/strutils import `%`, startsWith, replace
 import ../assets, ../configurator, ../routes
+from klymene/cli import display
 
 # proc isSecondaryPage(): bool =
 #     return false
 
 # proc getPageContents(): string =
 #     readFile(filepath)
+
+type
+    Logger = object
+        code: HttpCode
+        verb: HttpMethod
+        path: string
 
 proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, body: string] =
     let assetsEndpoint = "/assets/"
@@ -40,17 +47,23 @@ proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, 
                 response = (code: Http200, body: readFile(routeObject.getFile()))
     return response
 
-proc startHttpServer*(config: Configurator) =
+proc startHttpServer*(config: Configurator, isLoggerEnabled = false) =
     ## Start a Madam Server instance using current configuration
     let
         currentProject = getCurrentDir()
         localAddress = "127.0.0.1"
 
     proc onRequest(req: Request): Future[void] =
+        let path = req.path.get()
+        var logger = Logger()
         if req.httpMethod == some(HttpGet):
-            let (code, body) = httpGetRequest(req.path.get(), config)
+            let (code, body) = httpGetRequest(path, config)
+            logger.code = code
+            logger.verb = HttpGet
+            logger.path = path
             req.send(code, body)
         else:
             req.send(Http404, "nope")
-
+        if isLoggerEnabled:
+            display("$1 $2 ⟶ $3" % [$logger.code, $logger.verb, logger.path])
     run(onRequest, initSettings(port=Port(config.getPort()), bindAddr=localAddress))

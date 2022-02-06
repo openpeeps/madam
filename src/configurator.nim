@@ -18,6 +18,7 @@ type
         name: string
         path: string
         port: int
+        logger: bool
         templates: tuple[layouts, views, partials: string]
         routes*: Router
         assets: Assets
@@ -52,8 +53,8 @@ proc getPartialsPath*[T: Configurator](config: T, path: string): string =
     ## Get the path that points to partials directory
     return config.getTemplatesPath("partials", "/" & path)
 
-proc getPort*[T: Configurator](config: T): int =
-    return config.port
+proc getPort*[T: Configurator](config: T): int = config.port
+proc hasEnabledLogger*[T: Configurator](config: T): bool = config.logs
 
 proc getAssets*[T: Configurator](config: T): Assets =
     return config.assets
@@ -85,9 +86,9 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         quit()
     
     let doc = Nyml(engine: Y2J).parse(readFile(configFilePath),
-        rules = @["name*:string", "path*:string", "port:int", "templates*:object",
-                  "templates.layouts*:string", "templates.views*:string",
-                  "templates.partials*:string"])
+        rules = @["name*:string", "path*:string", "port:int|1234", "logs:bool|false",
+                  "templates*:object", "templates.layouts*:string",
+                  "templates.views*:string", "templates.partials*:string"])
     if doc.hasErrorRules():
         let count = doc.getErrorsCount()
         let errorWord = if count == 1: "error" else: "errors"
@@ -103,6 +104,7 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
             name: doc.get("name").getStr(),
             path: doc.get("path").getStr(),
             port: doc.get("port").getInt(),
+            logger: doc.get("logs").getBool(),
             templates: (
                 layouts: doc.get("templates.layouts").getStr(),
                 views: doc.get("templates.views").getStr(),
