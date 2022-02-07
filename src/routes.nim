@@ -40,7 +40,7 @@ proc getRouteMethod[T: Router](router: T, verb: HttpMethod): RouteTable =
     return case verb:
         of HttpHead: router.head
         of HttpGet: router.get
-        of HttpPost: router.get
+        of HttpPost: router.post
         of HttpPut: router.put
         of HttpDelete: router.delete
         of HttpTrace: router.trace
@@ -88,7 +88,7 @@ proc newRoute[T: Router](r: var T, v: HttpMethod, k, f = "") =
         case v:
         of HttpHead: r.head[k]       = Route(verb: v, route: k)
         of HttpGet: r.get[k]         = Route(verb: v, route: k, file: f)
-        of HttpPost: r.get[k]        = Route(verb: v, route: k)
+        of HttpPost: r.post[k]       = Route(verb: v, route: k)
         of HttpPut: r.put[k]         = Route(verb: v, route: k)
         of HttpDelete: r.delete[k]   = Route(verb: v, route: k)
         of HttpTrace: r.trace[k]     = Route(verb: v, route: k)
