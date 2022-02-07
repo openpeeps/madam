@@ -49,7 +49,9 @@ Options:
 ```
 
 ## Developing with Madam
-Run `madam init` in your project directory and setup your `madam.yml` via command line wizard, or create the config file by hand, containing the following:
+Run `madam init` in your project directory and setup your `madam.yml` via command line wizard.
+
+Here you can find a beautiful `madam.yml` configuration that covers all Madam features.
 
 ```yaml
 name: "Awesome Madam"
@@ -84,9 +86,26 @@ routes:
         api:
             user: "@yallfake.user.profile(name, email, phone, address)"
 
+    # POST routes are awesome!
+    # You can tell Madam what kind of data will submit
+    # and how to manage each field based on given criteria
+    post:
+        login:
+            fields:
+                - "email*:email:string"
+                - "password*:password:string(min = 8, max = 24)"
+            session: true                                       # set a real session with cookie 
+            resolve: "middleware@auth"                          # link middleware to be resolved
+        register:
+            fields:
+                - "email*:email"                                # required. email format validation
+                - "name*:string(min = 8, max = 48)"             # required. between 8 - 48 chars
+                - "location:string(min = 10, max = 210)"        # optional field. if filled, should be between 10 - 210 chars
+                - "phone:phone"                                 # optional, phone format validation
+
 # Define your custom Middlewares
 middlewares:
-    auth: true
+    auth: "@login.session"                                      # link session
 
 # Setup Static Assets to serve any kind of static files via Madam
 assets:
