@@ -95,7 +95,6 @@ routes:
                 - "email*:email:string"
                 - "password*:password:string(min = 8, max = 24)"
             session: true                                       # set a real session with cookie 
-            resolve: "middleware@auth"                          # link middleware to be resolved
         register:
             fields:
                 - "email*:email"                                # required. email format validation
@@ -105,7 +104,7 @@ routes:
 
 # Define your custom Middlewares
 middlewares:
-    auth: "@login.session"                                      # link session
+    auth: "@login.session"                                      # link to a session
 
 # Setup Static Assets to serve any kind of static files via Madam
 assets:
