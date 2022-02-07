@@ -7,7 +7,7 @@
 
 import std/tables
 from std/httpcore import HttpMethod
-from std/strutils import replace
+from std/strutils import replace, toUpperAscii
 export tables
 
 type
@@ -38,15 +38,28 @@ proc init*[T: typedesc[Router]](router: T): Router =
 proc getRouteMethod[T: Router](router: T, verb: HttpMethod): RouteTable =
     ## Retrieve a immutable version of Route object by verb and key
     return case verb:
-    of HttpHead: router.head
-    of HttpGet: router.get
-    of HttpPost: router.get
-    of HttpPut: router.put
-    of HttpDelete: router.delete
-    of HttpTrace: router.trace
-    of HttpOptions: router.options
-    of HttpConnect: router.connect
-    of HttpPatch: router.patch
+        of HttpHead: router.head
+        of HttpGet: router.get
+        of HttpPost: router.get
+        of HttpPut: router.put
+        of HttpDelete: router.delete
+        of HttpTrace: router.trace
+        of HttpOptions: router.options
+        of HttpConnect: router.connect
+        of HttpPatch: router.patch
+
+proc getRouteMethodByStr(verb: string): HttpMethod =
+    case verb.toUpperAscii:
+        of "HEAD": result = HttpHead
+        of "GET": result = HttpGet
+        of "POST": result = HttpPost
+        of "PUT": result = HttpPut
+        of "DELETE": result = HttpDelete
+        of "TRACE": result = HttpTrace
+        of "OPTIONS": result = HttpOptions
+        of "CONNECT": result = HttpConnect
+        of "PATCH": result = HttpPatch
+    return result
 
 proc exists*[T: Router](router: T, verb: HttpMethod, k: string, existsGet = false): bool =
     ## Determine if a route exists based on given verb and route key
@@ -92,6 +105,9 @@ proc addTrace*[T: Router](r: var T, k: string)   = r.newRoute(HttpTrace, k)
 proc addOptions*[T: Router](r: var T, k: string) = r.newRoute(HttpOptions, k)
 proc addConnect*[T: Router](r: var T, k: string) = r.newRoute(HttpConnect, k)
 proc addPatch*[T: Router](r: var T, k: string)   = r.newRoute(HttpPatch, k)
+
+proc addRoute*[T: Router](r: var T, verb, k: string, f:string = "") =
+    r.newRoute(getRouteMethodByStr(verb), k, f)
 
 proc getFile*[T: Route](route: T): string =
     ## Return the file of the current Route object

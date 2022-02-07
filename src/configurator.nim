@@ -60,7 +60,7 @@ proc getAssets*[T: Configurator](config: T): Assets =
     return config.assets
 
 proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, routes: JsonNode): B =
-    for k, verb in routes.pairs():
+    for verbMethod, verb in routes.pairs():
         for route, file in verb.pairs():
             let fileName = file.getStr
             let filePath = config.getViewsPath(fileName)
@@ -68,7 +68,7 @@ proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, rou
                 display("👉 \"$1\" file could not be found. (ignored)" % [filename], indent=4)
             # elif mime.getMimetype(replace(filePath.splitFile().ext, ".", "")) != "text/html":
                 # display("👉 \"$1\" file has a different extension. Only \".html\" or \".htm\" allowed. (ignored)" % [filename], indent=4)
-            else: router.addGet(route, filePath)
+            else: router.addRoute(verbMethod, route, filePath)
     return router
 
 proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, assetsNode: JsonNode): B =
