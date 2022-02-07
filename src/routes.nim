@@ -96,16 +96,6 @@ proc newRoute[T: Router](r: var T, v: HttpMethod, k, f = "") =
         of HttpConnect: r.connect[k] = Route(verb: v, route: k)
         of HttpPatch: r.patch[k]     = Route(verb: v, route: k)
 
-proc addGet*[T: Router](r: var T, k, f: string)  = r.newRoute(HttpGet, k, f)
-proc addHead*[T: Router](r: var T, k: string)    = r.newRoute(HttpHead, k)
-proc addPost*[T: Router](r: var T, k: string)    = r.newRoute(HttpPost, k)
-proc addPut*[T: Router](r: var T, k: string)     = r.newRoute(HttpPut, k)
-proc addDelete*[T: Router](r: var T, k: string)  = r.newRoute(HttpDelete, k)
-proc addTrace*[T: Router](r: var T, k: string)   = r.newRoute(HttpTrace, k)
-proc addOptions*[T: Router](r: var T, k: string) = r.newRoute(HttpOptions, k)
-proc addConnect*[T: Router](r: var T, k: string) = r.newRoute(HttpConnect, k)
-proc addPatch*[T: Router](r: var T, k: string)   = r.newRoute(HttpPatch, k)
-
 proc addRoute*[T: Router](r: var T, verb, k: string, f:string = "") =
     r.newRoute(getRouteMethodByStr(verb), k, f)
 
