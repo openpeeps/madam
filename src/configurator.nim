@@ -6,7 +6,7 @@
 # https://github.com/openpeep/madam
 
 import nyml
-from std/os import getCurrentDir, fileExists, normalizePath, splitFile, splitPath
+from std/os import getCurrentDir, fileExists, dirExists, normalizePath, splitFile, splitPath
 from std/strutils import `%`, replace
 import ./assets, ./routes
 from klymene/cli import display
@@ -42,15 +42,15 @@ proc getTemplatesPath[T: Configurator](config: T, contentType: string, filePath:
     of "partials": dirpath = config.templates.partials
     return config.getPath(dirpath & "/" & filePath)
 
-proc getViewsPath*[T: Configurator](config: T, path: string): string =
+proc getViewsPath*[T: Configurator](config: T, path: string = ""): string =
     ## Get the path that points to views directory
     return config.getTemplatesPath("views", "/" & path)
 
-proc getLayoutsPath*[T: Configurator](config: T, path: string): string =
+proc getLayoutsPath*[T: Configurator](config: T, path: string = ""): string =
     ## Get the path that points to layouts directory
     return config.getTemplatesPath("layouts", "/" & path)
 
-proc getPartialsPath*[T: Configurator](config: T, path: string): string =
+proc getPartialsPath*[T: Configurator](config: T, path: string = ""): string =
     ## Get the path that points to partials directory
     return config.getTemplatesPath("partials", "/" & path)
 
@@ -102,24 +102,33 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
             display("• " & err.getErrorMessage(), indent=4)
         quit()
 
+    let
+        layouts_path = doc.get("templates.layouts").getStr()
+        views_path = doc.get("templates.views").getStr()
+        partials_path = doc.get("templates.partials").getStr()
     var
         RoutesObject = Router.init()
         AssetsObject = Assets.init()
-        configurator = Configurator(
+        config = Configurator(
             name: doc.get("name").getStr(),
             path: doc.get("path").getStr(),
             port: doc.get("port").getInt(),
             logger: doc.get("console.logger").getBool(),
             templates: (
-                layouts: doc.get("templates.layouts").getStr(),
-                views: doc.get("templates.views").getStr(),
-                partials: doc.get("templates.partials").getStr()
+                layouts: layouts_path,
+                views: views_path,
+                partials: partials_path
             ),
             assets_paths: (source: getStr(doc.get("assets.source")), public: getStr(doc.get("assets.public")))
         )
 
-    AssetsObject.assets_paths = configurator.assets_paths
-    configurator.routes = configurator.collectRoutes(RoutesObject, doc.get("routes"))
-    configurator.assets = configurator.collectAssets(AssetsObject, doc.get("assets"))
+    # Check if layouts, views and partials directories exists
+    for dir in @[config.getLayoutsPath(), config.getViewsPath(), config.getPartialsPath()]:
+        if not dirExists(dir):
+            display("👉 \"$1\" directory is missing" % [dir.splitPath.tail], indent=2)
 
-    return (status: true, instance: configurator)
+    AssetsObject.assets_paths = config.assets_paths
+    config.routes = config.collectRoutes(RoutesObject, doc.get("routes"))
+    config.assets = config.collectAssets(AssetsObject, doc.get("assets"))
+
+    return (status: true, instance: config)
