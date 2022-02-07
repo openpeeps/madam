@@ -2,7 +2,8 @@
 
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
-- [x] < 1MB binary app
+- [x] < 1MB file size binary app
+- [x] < 3MB RAM usage in Welcome Screen 🥳
 - [x] Install once, run anytime, as many servers you need 👌
 - [x] No code required
 - [x] Serve Static Assets 📦
@@ -14,7 +15,7 @@
 - [ ] Static Website Builder
 - [x] Made for **Design Prototyping** and **Front-end Development**
 - [x] Works on **Linux** and **OS X**
-- [x] Open Source under `MIT` license
+- [x] Open Source under `GPLv3` license
 - [x] Pew pew pew! ZWIFF! 💋
 
 ## Why ?
@@ -79,7 +80,8 @@ routes:
         # Groups are useful when working with API-like routes
         # In this example user is accessible via localhost:1230/api/user
         # and returns a JSON response using random generated data
-        api: 
+        # for requested fields
+        api:
             user: "@yallfake.user.profile(name, email, phone, address)"
 
 # Define your custom Middlewares
@@ -130,12 +132,11 @@ _todo_
 - [x] Create logo
 - [x] Embedding Httpbeast
 - [ ] Routes Handler
-- [ ] Static Assets Handler
+- [x] Static Assets Handler
 - [x] `init` command
-- [ ] `run` command with `--verbose` flag
+- [x] `run` command with `--verbose` flag
 - [ ] `build` command
 - [ ] Multi-threading support
-- [ ] Auto-discover HTML files in `layouts`, `views` and `partials`
 - [ ] Support for all `HTTP` verbs
 - [ ] YAML responses for `POST`, `PUT`, etc.
 - [ ] GitHub Workflow Action for [Cross Compilation and Release](https://github.com/nim-lang/Nim/wiki/BuildServices#8-cross-compilation-and-release)
@@ -155,5 +156,5 @@ If you like this project you can contribute to Madam by opening new issues, fixi
 <strong>Why Nim?</strong> Performance, fast compilation and C-like freedom. We want to keep code clean, readable, concise, and close to our intention. Also a very good language to learn in 2022.
 
 ### 🎩 License
-Madam is an Open Source Software released under `MIT` license. [Developed by Humans from OpenPeep](https://github.com/openpeep).<br>
+Madam is an Open Source Software released under `GPLv3` license. [Developed by Humans from OpenPeep](https://github.com/openpeep).<br>
 Copyright &copy; 2022 OpenPeep & Contributors &mdash; All rights reserved.
