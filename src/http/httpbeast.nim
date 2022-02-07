@@ -2,10 +2,10 @@
 # Design Prototyping 🎨 and Front-end Development 🌈
 # 
 # Httpbeast is a highly performant multi-threaded
-# HTTP 1.1 server written by Dominik Picheta
+# HTTP 1.1 server written by Dominik Picheta (MIT License)
 # https://github.com/dom96/httpbeast
 # 
-# MIT License
+# GPLv3 License
 # Copyright (c) 2022 George Lemon from OpenPeep
 # https://github.com/openpeep/madam
 

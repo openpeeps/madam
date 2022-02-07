@@ -1,7 +1,7 @@
 # Madam 💋 A lightweight local web server for
 # Design Prototyping 🎨 and Front-end Development 🌈
 # 
-# MIT License
+# GPLv3 License
 # Copyright (c) 2022 George Lemon from OpenPeep
 # https://github.com/openpeep/madam
 
@@ -64,5 +64,5 @@ proc startHttpServer*(config: Configurator) =
         else:
             req.send(Http404, "nope")
         if config.hasEnabledLogger():
-            display("$1 $2  ➤  $3" % [$logger.code, $logger.verb, logger.path], indent=2)
+            display("$1 $2  ➤  $3" % [$logger.verb, $logger.code, logger.path], indent=2)
     run(onRequest, initSettings(port=Port(config.getPort()), bindAddr=localAddress))

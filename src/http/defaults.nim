@@ -1,7 +1,7 @@
 # Madam 💋 A lightweight local web server for
 # Design Prototyping 🎨 and Front-end Development 🌈
 # 
-# MIT License
+# GPLv3 License
 # Copyright (c) 2022 George Lemon from OpenPeep
 # https://github.com/openpeep/madam
 
