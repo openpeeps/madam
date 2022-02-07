@@ -6,7 +6,7 @@
 # https://github.com/openpeep/madam
 
 import nyml
-from std/os import getCurrentDir, fileExists, normalizePath, splitFile
+from std/os import getCurrentDir, fileExists, normalizePath, splitFile, splitPath
 from std/strutils import `%`, replace
 import ./assets, ./routes
 from klymene/cli import display
@@ -22,6 +22,7 @@ type
         templates: tuple[layouts, views, partials: string]
         routes*: Router
         assets: Assets
+        assets_paths: tuple[source: string, public: string]
 
 proc getName*[T: Configurator](config: T): string =
     return config.name
@@ -59,6 +60,8 @@ proc hasEnabledLogger*[T: Configurator](config: T): bool = config.logger
 proc getAssets*[T: Configurator](config: T): Assets =
     return config.assets
 
+proc getAssetsPath*[T: Configurator](config: T): tuple[source: string, public: string] = config.assets_paths
+
 proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, routes: JsonNode): B =
     for verbMethod, verb in routes.pairs():
         for route, file in verb.pairs():
@@ -72,11 +75,11 @@ proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, rou
     return router
 
 proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, assetsNode: JsonNode): B =
-    assets.addFile("traho.develop.css", config.getPath("/traho.develop.css"))
-    assets.addFile("app.css", config.getPath("/app.css"))
-    assets.addFile("sweetsyntax.min.js", config.getPath("/../dist/sweetsyntax.min.js"))
-    assets.addFile("logo.png", config.getPath("/logo.png"))
-    assets.addFile("sweetworker.js", config.getPath("/sweetworker.js"))
+    let files = finder(findArgs = @["-type", "f", "-print"], path = config.assets_paths.source)
+    if files.len == 0: quit()
+    for file in files:
+        let f = splitPath(file)
+        assets.addFile(f.tail, file)
     return assets
 
 proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: Configurator] =
@@ -99,8 +102,8 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         quit()
 
     var
-        routesTable = Router.init()
-        assetsTable = Assets.init()
+        RoutesObject = Router.init()
+        AssetsObject = Assets.init()
         configurator = Configurator(
             name: doc.get("name").getStr(),
             path: doc.get("path").getStr(),
@@ -110,10 +113,12 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
                 layouts: doc.get("templates.layouts").getStr(),
                 views: doc.get("templates.views").getStr(),
                 partials: doc.get("templates.partials").getStr()
-            )
+            ),
+            assets_paths: (source: getStr(doc.get("assets.source")), public: getStr(doc.get("assets.public")))
         )
 
-    configurator.routes = configurator.collectRoutes(routesTable, doc.get("routes"))
-    configurator.assets = configurator.collectAssets(assetsTable, doc.get("assets"))
+    AssetsObject.assets_paths = configurator.assets_paths
+    configurator.routes = configurator.collectRoutes(RoutesObject, doc.get("routes"))
+    configurator.assets = configurator.collectAssets(AssetsObject, doc.get("assets"))
 
     return (status: true, instance: configurator)
