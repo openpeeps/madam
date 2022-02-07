@@ -25,7 +25,9 @@ type
         verb: HttpMethod
         path: string
 
-proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, body: string] =
+    ResponseTuple = tuple[code: HttpCode, body: string]
+
+proc httpGetRequest(route: string, config: Configurator): ResponseTuple =
     # Procedure for handling GET Requests for public routes and static assets
     let assetsEndpoint = "/assets/"
     var path = route
@@ -49,11 +51,25 @@ proc httpGetRequest(route: string, config: Configurator): tuple[code: HttpCode, 
                 response = (code: Http200, body: readFile(routeObject.getFile()))
     return response
 
-proc httpPostRequests(route: string, config: Configurator): tuple[code: HttpCode, body: JsonNode] =
-    var response = (code: Http404, body: %* {"message": "Page not found"})
+proc httpPostRequests(route: string, config: Configurator, body: string): ResponseTuple =
+    ## Handle POST requests
+    var response = (code: Http404, body: "{\"message\": \"Page not found\"}")
     if postExists(config.routes, route):
-        response = (code: Http200, body: %* {"message": "Alright"})
+        response = (code: Http200, body: "{\"response\": $1}" % [body])
     return response
+
+proc httpPutRequests(route: string, config: Configurator): ResponseTuple =
+    ## Handle PUT requests and returns status code and body (if needed):
+    ## Status 204 - No Content:     Update to an existing resource (no body)
+    ## Status 201 - Created:        Successful PUT of a new resource (includes body)
+    ## Status 409 - Conflict:       Unsuccessful submission modification, listing diff between the attempted and the current resource (includes body)
+    ## Status 400 - Bad Request:    Unsuccessful PUT (includes body)
+    return (code: Http204, body: "")
+
+proc httpConnectRequests(route: string, config: Configurator): tuple[code: HttpCode, body: string] =
+    ## Handle CONNECT requests. This Method requires --threads:on
+    ## as it creates a new thread for each connection
+    return (code: Http200, body: "Connection Established")
 
 proc startHttpServer*(config: Configurator) =
     ## Start a Madam Server instance using current configuration
@@ -63,24 +79,33 @@ proc startHttpServer*(config: Configurator) =
     proc onRequest(req: Request): Future[void] =
         let path = req.path.get()
         var logger = Logger()
+        var response: ResponseTuple
 
         # Handle GET requests
         if req.httpMethod == some(HttpGet):
-            let (code, body) = httpGetRequest(path, config)
-            logger.code = code
-            logger.verb = HttpGet
-            logger.path = path
-            req.send(code, body)
-        
+            response = httpGetRequest(path, config)
+
         # Handle POST requests
         elif req.httpMethod == some(HttpPost):
-            let (code, body) = httpPostRequests(path, config)
-            logger.code = code
-            logger.verb = HttpPost
-            logger.path = path
-            req.send(code, $body)
-        else:
-            req.send(Http404, "nope")
+            response = httpPostRequests(path, config, req.body.get())
+
+        # Handle PUT requests
+        elif req.httpMethod == some(HttpPut):
+            response = httpPutRequests(path, config)
+
+        # TODO
+        # Handle CONNECT requests
+        # elif req.httpMethod == some(HttpConnect):
+        #     response = httpConnectRequests(path, config)
+
+        # Collect request / response via Logger
+        logger.code = response.code
+        logger.verb = req.httpMethod.get()
+        logger.path = path
+
+        # Send the response. If enabled, prompt to console
+        # all requests, including HTTP Method, Status Code, and path
+        req.send(response.code, response.body)
         if config.hasEnabledLogger():
             display("$1 $2  ➤  $3" % [$logger.verb, $logger.code, logger.path], indent=2)
     run(onRequest, initSettings(port=Port(config.getPort()), bindAddr=localAddress))

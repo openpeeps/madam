@@ -6,7 +6,7 @@
 # https://github.com/openpeep/madam
 
 import klymene
-import ./commands/[watch]
+import ./commands/[watch, init]
 from strutils import `%`
 
 # from macros import dumpAstGen
@@ -19,6 +19,7 @@ let sheet = """
 # For updates, tips and tricks go to github.com/openpeep/madam #
 
 $3
+  $1 init                           # Create a new Madam configuration #
   $1 run [--quiet]                  # Run local server. Use quiet flag for running in background #
   $1 build                          # Compile current project to Static HTML Website #
   $1 bundle                         # Bundle project for back-end implementation phase #
@@ -31,5 +32,5 @@ $4
 
 let args = newCommandLine(sheet, version=version, binaryName=binName)
 
-if isCommand("run", args):   watch.runCommand()
-elif isCommand("stop", args):  echo "watching"
+if isCommand("init", args):    init.runCommand()
+elif isCommand("run", args):   watch.runCommand()
