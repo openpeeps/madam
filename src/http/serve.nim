@@ -5,19 +5,13 @@
 # Copyright (c) 2022 George Lemon from OpenPeep
 # https://github.com/openpeep/madam
 
-import std/[options, asyncdispatch, json]
+import std/[options, asyncdispatch]
 import ./httpbeast, ./defaults
 import ../assets, ../configurator, ../routes
 
 from std/os import getCurrentDir, fileExists
 from std/strutils import `%`, startsWith, replace
 from klymene/cli import display
-
-# proc isSecondaryPage(): bool =
-#     return false
-
-# proc getPageContents(): string =
-#     readFile(filepath)
 
 type
     Logger = object
