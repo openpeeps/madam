@@ -1,5 +1,7 @@
 <p align="center"><img src=".github/madam.png" width="140px"><br><strong>Madam 💋 A lightweight local web server for 🎨 Design Prototyping • 🌈 Front-end Development</strong><br>Pew pew pew! ZWIFF! Boom!</p>
 
+_Work in progress_
+
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
 - [x] < 1MB file size binary app
@@ -8,11 +10,10 @@
 - [x] No code required
 - [x] Serve Static Assets 📦
 - [x] Configuration via `madam.yml`
-- [ ] Routes Management via `madam.router.yml`
+- [ ] Static HTML Website Generator
+- [x] Routes Management via `madam.routes.yml`
 - [ ] Supports all HTTP verbs, `GET`, `POST`, `HEAD`, etc.
-- [ ] Madam Skins (Templating Handler) `layout`, `view`, `partials`
-- [ ] Multi-threading
-- [ ] Static Website Builder
+- [ ] Madam Skins / [Template Engine via Tim](https://github.com/openpeep/tim) for `layout`, `view`, `partials`
 - [x] Made for **Design Prototyping** and **Front-end Development**
 - [x] Works on **Linux** and **OS X**
 - [x] Open Source under `GPLv3` license
@@ -66,42 +67,6 @@ templates:
     views: "views"                  # directory path for views
     partials: "partials"            # directory path for partials
 
-# Declare your web routes
-routes:
-    # Routes are separated by their Http Method
-    get: 
-        about: "about.html"
-        projects: "projects.html"
-        
-        # Want to handle custom error codes? Alright!
-        notfound: "error.html:404"
-
-        # Or maybe a middleware protected page? Easy!
-        profile: "middleware@auth(profile.html)"
-
-        # Groups are useful when working with API-like routes
-        # In this example user is accessible via localhost:1230/api/user
-        # and returns a JSON response using random generated data
-        # for requested fields
-        api:
-            user: "@yallfake.user.profile(name, email, phone, address)"
-
-    # POST routes are awesome!
-    # You can tell Madam what kind of data will submit
-    # and how to manage each field based on given criteria
-    post:
-        login:
-            fields:
-                - "email*:email:string"
-                - "password*:password:string(min = 8, max = 24)"
-            session: true                                       # set a real session with cookie 
-        register:
-            fields:
-                - "email*:email"                                # required. email format validation
-                - "name*:string(min = 8, max = 48)"             # required. between 8 - 48 chars
-                - "location:string(min = 10, max = 210)"        # optional field. if filled, should be between 10 - 210 chars
-                - "phone:phone"                                 # optional, phone format validation
-
 # Define your custom Middlewares
 middlewares:
     auth: "@login.session"                                      # link to a session
@@ -115,6 +80,48 @@ assets:
 console:
     logger: true                    # Enable http request logger
     clear: true                     # Clear previous console output on request
+```
+
+Routes are stored in a separate `yml` file, called `madam.routes.yml`. This is an advanced example:
+```yaml
+# Routes are separated by their Http Method.
+# 
+# Routes can be protected via middleware
+# You can set custom status code in response,
+# and generate random data for API-based projects.
+get: 
+    about: "about.html"
+    projects: "projects.html"
+    
+    # Want to handle custom error codes? Alright!
+    notfound: "error.html:404"
+
+    # Or maybe a middleware protected page? Easy!
+    profile: "middleware@auth(profile.html)"
+
+    # Groups are useful when working with API-like routes
+    # In this example user is accessible via localhost:1230/api/user
+    # and returns a JSON response using random generated data
+    # for requested fields
+    api:
+        user: @yallfake.user.profile(name, email, phone, address)
+
+# POST routes are awesome!
+# You can tell Madam what kind of data will submit
+# and how to manage each field based on given criteria
+post:
+    login:
+        fields:
+            - "email*:email"
+            - "password*:password:string(min = 8, max = 24)"
+        session: true                                       # set a real session with cookie 
+    register:
+        fields:
+            - "email*:email"                                # required. email format validation
+            - "name*:string(min = 8, max = 48)"             # required. between 8 - 48 chars
+            - "location:string(min = 10, max = 210)"        # optional field. if filled, should be between 10 - 210 chars
+            - "phone:phone"                                 # optional, phone format validation
+
 ```
 
 ## Madam Skins
@@ -136,7 +143,7 @@ Base is the default layout file required by Madam. You can create unlimited layo
     <title></title>
 </head>
 <body>
-{{page_content}}
+{page_content}
 </body>
 </html>
 ```
@@ -149,14 +156,13 @@ _todo_
 #### 0.1.0
 - [x] Create logo
 - [x] Embedding Httpbeast
-- [ ] Routes Handler
+- [x] Routes Handler
 - [x] Static Assets Handler
 - [x] `init` command
 - [x] `run` command with `--verbose` flag
 - [ ] `build` command
-- [ ] Multi-threading support
-- [ ] Support for all `HTTP` verbs
-- [ ] YAML responses for `POST`, `PUT`, etc.
+- [ ] Multi-threading while generating project to Static HTML
+- [ ] Templating via [Tim Engine](https://github.com/openpeep/tim) supporting `layouts`, `views`, `partials`
 - [ ] GitHub Workflow Action for [Cross Compilation and Release](https://github.com/nim-lang/Nim/wiki/BuildServices#8-cross-compilation-and-release)
 
 #### 0.2.0
