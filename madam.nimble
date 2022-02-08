@@ -11,8 +11,8 @@ binDir        = "bin"
 # Dependencies
 
 requires "nim >= 1.6.0"
-requires "klymene"
-requires "nyml"
+requires "klymene"          # https://github.com/openpeep/klymene
+requires "nyml"             # https://github.com/openpeep/nyml
 
 include ./tasks/dev
 include ./tasks/prod
