@@ -2,7 +2,7 @@
 
 version       = "0.1.0"
 author        = "George Lemon"
-description   = "A new awesome nimble package"
+description   = "Local webserver for Design Prototyping and Front-end Development"
 license       = "MIT"
 srcDir        = "src"
 bin           = @["madam"]
