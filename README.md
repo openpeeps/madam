@@ -3,7 +3,10 @@
     <img src="https://github.com/openpeep/madam/raw/main/.github/carbon.png" width="603px">
 </p>
 
-_Work in progress_
+<details>
+    <summary align="center">👋 Madam Welcome Screen is sooo POP! 🙀</summary>
+<img src="https://github.com/openpeep/madam/raw/main/.github/welcomescreen.png" width="1200px" alt="Madam - Welcome screen"/>
+</details>
 
 ## 😍 Key Features
 - [x] Compiled, Fast, Low memory foot-print 🍃
