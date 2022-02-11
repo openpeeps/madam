@@ -1,4 +1,7 @@
-<p align="center"><img src=".github/madam.png" width="140px"><br><strong>Madam 💋 A lightweight local web server for 🎨 Design Prototyping • 🌈 Front-end Development</strong><br>Pew pew pew! ZWIFF! Boom!</p>
+<p align="center">
+    <img src="https://github.com/openpeep/madam/raw/main/.github/madam.png" width="140px"><br><strong>Madam 💋 A lightweight local web server for Design Prototyping • Front-end Development 🌈</strong><br>Pew pew pew! ZWIFF! Boom!<br>
+    <img src="https://github.com/openpeep/madam/raw/main/.github/carbon.png" width="603px">
+</p>
 
 _Work in progress_
 
