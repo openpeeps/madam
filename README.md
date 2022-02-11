@@ -5,7 +5,7 @@
 
 <details>
     <summary align="center">👋 Madam Welcome Screen is sooo POP! 🙀</summary>
-<img src="https://github.com/openpeep/madam/raw/main/.github/welcomescreen.png" width="1200px" alt="Madam - Welcome screen"/>
+    <img src="https://github.com/openpeep/madam/raw/main/.github/welcomescreen.png" width="1200px" alt="Madam - Welcome screen"/>
 </details>
 
 ## 😍 Key Features
@@ -60,6 +60,8 @@ Run `madam init` in your project directory and setup your `madam.yml` via comman
 
 Here you can find a beautiful `madam.yml` configuration that covers all Madam features.
 
+On hold, Madam depends on 👉 [Nyml](https://github.com/openpeep/nyml) (WIP)
+
 ```yaml
 name: "Awesome Madam"
 path: "./example"                   # path to your root HTML project
@@ -88,71 +90,10 @@ console:
     clear: true                     # Clear previous console output on request
 ```
 
-Routes are stored in a separate `yml` file, called `madam.routes.yml`. This is an advanced example:
-```yaml
-# Routes are separated by their Http Method.
-# 
-# Routes can be protected via middleware
-# You can set custom status code in response,
-# and generate random data for API-based projects.
-get: 
-    about: "about.html"
-    projects: "projects.html"
-    
-    # Want to handle custom error codes? Alright!
-    notfound: "error.html:404"
-
-    # Or maybe a middleware protected page? Easy!
-    profile: "middleware@auth(profile.html)"
-
-    # Groups are useful when working with API-like routes
-    # In this example user is accessible via localhost:1230/api/user
-    # and returns a JSON response using random generated data
-    # for requested fields
-    api:
-        user: @yallfake.user.profile(name, email, phone, address)
-
-# POST routes are awesome!
-# You can tell Madam what kind of data will submit
-# and how to manage each field based on given criteria
-post:
-    login:
-        fields:
-            - "email*:email"
-            - "password*:password:string(min = 8, max = 24)"
-        session: true                                       # set a real session with cookie 
-    register:
-        fields:
-            - "email*:email"                                # required. email format validation
-            - "name*:string(min = 8, max = 48)"             # required. between 8 - 48 chars
-            - "location:string(min = 10, max = 210)"        # optional field. if filled, should be between 10 - 210 chars
-            - "phone:phone"                                 # optional, phone format validation
-
-```
-
 ## Madam Skins
 The way you can stay **DRY**. Madam brings `layouts`, `views` and `partials` logic to your project.
 
-#### Create the layout
-Create your first layout with the HTML meta code, place `{{page_content}}` tag inside `<body>` and save it as `base.html`.
-
-Base is the default layout file required by Madam. You can create unlimited layout pages by simply creating files under `/layouts` directory.
-
-**👉 Tips: Madam is able to auto discover all HTML files from `views`, `layouts` and `pages` directories.**
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-</head>
-<body>
-{page_content}
-</body>
-</html>
-```
+On hold, Madam depends on 👉 [Tim Template Engine](https://github.com/openpeep/tim) (WIP)
 
 ### Create the first page
 _todo_
