@@ -111,6 +111,7 @@ _todo_
 - [ ] Multi-threading while generating project to Static HTML
 - [ ] Templating via [Tim Engine](https://github.com/openpeep/tim) supporting `layouts`, `views`, `partials`
 - [ ] GitHub Workflow Action for [Cross Compilation and Release](https://github.com/nim-lang/Nim/wiki/BuildServices#8-cross-compilation-and-release)
+- [ ] Talk about it on ycombinator / stackoverflow / producthunt 
 
 #### 0.2.0
 - [ ] Fake content generator
