@@ -40,7 +40,7 @@ proc getTemplatesPath[T: Configurator](config: T, contentType: string, filePath:
     of "layouts": dirpath = config.templates.layouts
     of "views": dirpath = config.templates.views
     of "partials": dirpath = config.templates.partials
-    return config.getPath(dirpath & "/" & filePath)
+    result = config.getPath(dirpath & "/" & filePath)
 
 proc getViewsPath*[T: Configurator](config: T, path: string = ""): string =
     ## Get the path that points to views directory
@@ -69,7 +69,7 @@ proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, rou
             let filePath = config.getViewsPath(fileName)
             if verb == "get":
                 if not filePath.fileExists():
-                    display("👉 \"$1\" file could not be found. (ignored)" % [filename], indent=4)
+                    display("👉 \"$1\" file could not be found. (ignored)" % [filename], indent=2)
                     # TODO check file type via mimetypes
                 else: router.addRoute(verb, route, filePath)
             else: router.addRoute(verb, route)
@@ -87,7 +87,7 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
     let configFilePath = getCurrentDir() & "/" & configFile
     if not fileExists(configFilePath):
         display("👉 Missing \"$1\" in your project." % [configFile], indent=2, br="before")
-        display("Generate your config with \"madam init\"", indent=4)
+        display("Generate your config with \"madam init\"", indent=2)
         quit()
     
     let doc = Nyml(engine: Y2J).parse(readFile(configFilePath),
@@ -99,16 +99,18 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         let errorWord = if count == 1: "error" else: "errors"
         display("👉 Found $1 $2 in your Madam configuration:" % [$doc.getErrorsCount(), errorWord], indent=2)
         for key, err in doc.getErrorRules().pairs():
-            display("• " & err.getErrorMessage(), indent=4)
+            display("• " & err.getErrorMessage(), indent=2)
         quit()
 
     let
-        layouts_path = doc.get("templates.layouts").getStr()
-        views_path = doc.get("templates.views").getStr()
-        partials_path = doc.get("templates.partials").getStr()
+        layouts_path = doc.get("templates.layouts").getStr
+        views_path = doc.get("templates.views").getStr
+        partials_path = doc.get("templates.partials").getStr
+    
     var
         RoutesObject = Router.init()
         AssetsObject = Assets.init()
+        assets_source_path = getCurrentDir() & "/" & doc.get("assets.source").getStr
         config = Configurator(
             name: doc.get("name").getStr(),
             path: doc.get("path").getStr(),
@@ -119,7 +121,7 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
                 views: views_path,
                 partials: partials_path
             ),
-            assets_paths: (source: getStr(doc.get("assets.source")), public: getStr(doc.get("assets.public")))
+            assets_paths: (source: assets_source_path , public: getStr(doc.get("assets.public")))
         )
 
     # Check if layouts, views and partials directories exists

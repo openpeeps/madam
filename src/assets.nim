@@ -30,7 +30,7 @@ proc finder*(findArgs: seq[string] = @[], path=""): seq[string] {.thread.} =
     args.insert(path, 0)
     var files = cmd("find", args).strip()
     if files.len == 0:
-        display("Unable to find any static files.", indent=4)
+        display("Unable to find any static files.", indent=2)
     else:
         return files.split("\n")
 
