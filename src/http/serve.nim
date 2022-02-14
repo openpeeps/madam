@@ -9,7 +9,7 @@ import std/[options, asyncdispatch]
 import ./httpbeast, ./defaults
 import ../assets, ../configurator, ../routes
 
-from std/os import getCurrentDir, fileExists
+from std/os import getCurrentDir, fileExists, execShellCmd
 from std/strutils import `%`, startsWith, replace
 from klymene/cli import display
 
@@ -28,6 +28,7 @@ proc httpGetRequest(route: string, config: Configurator): ResponseTuple =
     var response = (code: Http404, body: defaults.getErrorPage)
     case path
     of "/":
+        if config.hasClearOutput(): discard execShellCmd("clear")
         let indexFilePath = config.getViewsPath("index.html")
         if fileExists(indexFilePath):
             response = (code: Http200, body: readFile(indexFilePath))
@@ -35,11 +36,11 @@ proc httpGetRequest(route: string, config: Configurator): ResponseTuple =
             response = (code: Http200, body: defaults.getWelcomeScreen)
     else:
         if path.startsWith(assetsEndpoint):
-            # try serve static assets if is in path
             path = replace(path, assetsEndpoint)
             if config.getAssets().hasFile(path):
                 response = (code: Http200, body: config.getAssets().getFile(path))
         elif getExists(config.routes, path):
+            if config.hasClearOutput(): discard execShellCmd("clear")
             let routeObject = getRoute(config.routes, HttpGet, path)
             if fileExists(routeObject.getFile()):
                 response = (code: Http200, body: readFile(routeObject.getFile()))
@@ -70,6 +71,7 @@ proc startHttpServer*(config: Configurator) =
     let
         currentProject = getCurrentDir()
         localAddress = "127.0.0.1"
+
     proc onRequest(req: Request): Future[void] =
         let path = req.path.get()
         var logger = Logger()
@@ -100,6 +102,6 @@ proc startHttpServer*(config: Configurator) =
         # Send the response. If enabled, prompt to console
         # all requests, including HTTP Method, Status Code, and path
         req.send(response.code, response.body)
-        if config.hasEnabledLogger():
+        if config.hasLogger():
             display("$1 $2  ➤  $3" % [$logger.verb, $logger.code, logger.path], indent=2)
     run(onRequest, initSettings(port=Port(config.getPort()), bindAddr=localAddress))

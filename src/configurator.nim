@@ -22,7 +22,8 @@ type
         templates: tuple[layouts, views, partials: string]
         routes*: Router
         assets: Assets
-        assets_paths: tuple[source: string, public: string]
+        assets_paths: tuple[source, public: string]
+        console: tuple[logger, clear: bool]
 
 proc getName*[T: Configurator](config: T): string =
     return config.name
@@ -55,7 +56,8 @@ proc getPartialsPath*[T: Configurator](config: T, path: string = ""): string =
     return config.getTemplatesPath("partials", "/" & path)
 
 proc getPort*[T: Configurator](config: T): int = config.port
-proc hasEnabledLogger*[T: Configurator](config: T): bool = config.logger
+proc hasLogger*[T: Configurator](config: T): bool = config.console.logger
+proc hasClearOutput*[T: COnfigurator](config: T): bool = config.console.clear == true
 
 proc getAssets*[T: Configurator](config: T): Assets =
     return config.assets
@@ -91,9 +93,10 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         quit()
     
     let doc = Nyml(engine: Y2J).parse(readFile(configFilePath),
-        rules = @["name*:string", "path*:string", "port:int|1234", "logs:bool|false",
+        rules = @["name*:string", "path*:string", "port:int|1234",
                   "templates*:object", "templates.layouts*:string",
                   "templates.views*:string", "templates.partials*:string"])
+
     if doc.hasErrorRules():
         let count = doc.getErrorsCount()
         let errorWord = if count == 1: "error" else: "errors"
@@ -112,16 +115,22 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         AssetsObject = Assets.init()
         assets_source_path = getCurrentDir() & "/" & doc.get("assets.source").getStr
         config = Configurator(
-            name: doc.get("name").getStr(),
-            path: doc.get("path").getStr(),
-            port: doc.get("port").getInt(),
-            logger: doc.get("console.logger").getBool(),
+            name: doc.get("name").getStr,
+            path: doc.get("path").getStr,
+            port: doc.get("port").getInt,
             templates: (
                 layouts: layouts_path,
                 views: views_path,
                 partials: partials_path
             ),
-            assets_paths: (source: assets_source_path , public: getStr(doc.get("assets.public")))
+            assets_paths: (
+                source: assets_source_path,
+                public: doc.get("assets.public").getStr
+            ),
+            console: (
+                logger: doc.get("console.logger").getBool,
+                clear: doc.get("console.clear").getBool
+            )
         )
 
     # Check if layouts, views and partials directories exists
