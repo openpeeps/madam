@@ -6,7 +6,7 @@
 # https://github.com/openpeep/madam
 
 import klymene
-import ./commands/[watch, init]
+import ./commands/[init, run, build]
 from strutils import `%`
 
 # from macros import dumpAstGen
@@ -15,15 +15,13 @@ const version = "0.1.0"
 const binName = "madam"
 
 let sheet = """
-# Madam $2 💅 A lightwiehgt local web server for Front-end Development #
-# For updates, tips and tricks go to github.com/openpeep/madam #
+# Madam $2 💋 Local Web Server for Design Prototyping and Front-end Development #
+# Updates, tips and tricks 👉 https://github.com/openpeep/madam #
 
 $3
-  $1 init                           # Create a new Madam configuration #
+  $1 init                           # Create a new Madam server config #
   $1 run [--quiet]                  # Run local server. Use quiet flag for running in background #
-  $1 build                          # Compile current project to Static HTML Website #
-  $1 bundle                         # Bundle project for back-end implementation phase #
-  $1 faker                          # Generate fake data #
+  $1 build                          # Build current project to Static HTML pages #
 
 $4
   -h --help                       # Show this screen. #
@@ -33,4 +31,5 @@ $4
 let args = newCommandLine(sheet, version=version, binaryName=binName)
 
 if isCommand("init", args):    init.runCommand()
-elif isCommand("run", args):   watch.runCommand()
+elif isCommand("run", args):   run.runCommand()
+elif isCommand("build", args): build.runCommand()

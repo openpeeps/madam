@@ -10,4 +10,7 @@ import ../configurator
 from strutils import `%`
 
 proc runCommand*() =
-    let Config = Configurator.init()
+    ## Command for generating a `madam.yml` configuration file
+    display("Generate a Madam Server Configuration", indent=2)
+    # let Config = Configurator.init()
+    # let (source_path, public_path) = Config.instance.getAssetsPath()
