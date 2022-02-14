@@ -11,11 +11,16 @@ routes:
         about: "about.html"
         # TODO Nyml Lexer/Parser
         # allow key fields containing - / _ and 
+    post:
+        test: "asa"
+
+    connect:
+        chat: "test"
 
 # Setup Static Assets to serve any
 # kind of static files via Madam
 assets:
-    source: "./dist/assets/*"        # Path on disk for indexing the static assets
+    source: "./dist/assets/*"        # Path on disk for indexing all files inside assets directory
     public: "/assets"                # Public route for accessing the static assets
 
 # Customize console output
