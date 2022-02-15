@@ -22,7 +22,7 @@
 - [ ] Madam Skins / [Template Engine via Tim](https://github.com/openpeep/tim) for `layout`, `view`, `partials`
 - [x] Made for **Design Prototyping** and **Front-end Development**
 - [x] Works on **Linux** and **OS X**
-- [x] Open Source under `GPLv3` license
+- [x] Open Source under `MIT` license
 - [x] Pew pew pew! ZWIFF! 💋
 
 ## Why ?
