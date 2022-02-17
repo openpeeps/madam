@@ -20,7 +20,6 @@ type
         path: string
         port: int
         logger: bool
-        templates: tuple[layouts, views, partials: string]
         routes*: Router
         assets: Assets
         assets_paths: tuple[source, public: string]
@@ -36,13 +35,9 @@ proc getPath*[T: Configurator](config: T, path: string): string =
     filepath.normalizePath()
     return filepath
 
-proc getTemplatesPath[T: Configurator](config: T, contentType: string, filePath: string): string =
-    var dirpath: string
-    case contentType:
-    of "layouts": dirpath = config.templates.layouts
-    of "views": dirpath = config.templates.views
-    of "partials": dirpath = config.templates.partials
-    result = config.getPath(dirpath & "/" & filePath)
+proc getTemplatesPath[T: Configurator](config: T, dir: string, filePath: string): string =
+    ## Get absolute path from current project
+    result = config.getPath(dir & filePath)
 
 proc getViewsPath*[T: Configurator](config: T, path: string = ""): string =
     ## Get the path that points to views directory
@@ -79,6 +74,7 @@ proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, rou
     return router
 
 proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, assetsNode: JsonNode): B =
+    ## Collect all static files inside assets directory
     let files = finder(findArgs = @["-type", "f", "-print"], path = config.assets_paths.source)
     if files.len == 0: quit()
     for file in files:
@@ -87,6 +83,7 @@ proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, ass
     return assets
 
 proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: Configurator] =
+    ## Initialize Madam Configurator for current project
     let configFilePath = getCurrentDir() & "/" & configFile
     if not fileExists(configFilePath):
         display("👉 Missing \"$1\" in your project." % [configFile], indent=2, br="before")
@@ -94,9 +91,7 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         quit()
     
     let doc = Nyml(engine: Y2J).parse(readFile(configFilePath),
-        rules = @["name*:string", "path*:string", "port:int|1234",
-                  "templates*:object", "templates.layouts*:string",
-                  "templates.views*:string", "templates.partials*:string"])
+        rules = @["name*:string", "path*:string", "port:int|1234", "templates*:object"])
 
     if doc.hasErrorRules():
         let count = doc.getErrorsCount()
@@ -114,8 +109,7 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
     var engine = TimEngine.init(
             source = doc.get("path").getStr,
             output = doc.get("path").getStr & "/storage/templates",
-            hotreload = false
-        )
+            hotreload = false)
 
     var
         RoutesObject = Router.init()
@@ -125,11 +119,6 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
             name: doc.get("name").getStr,
             path: doc.get("path").getStr,
             port: doc.get("port").getInt,
-            templates: (
-                layouts: layouts_path,
-                views: views_path,
-                partials: partials_path
-            ),
             assets_paths: (
                 source: assets_source_path,
                 public: doc.get("assets.public").getStr
@@ -139,11 +128,6 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
                 clear: doc.get("console.clear").getBool
             )
         )
-
-    # Check if layouts, views and partials directories exists
-    for dir in @[config.getLayoutsPath(), config.getViewsPath(), config.getPartialsPath()]:
-        if not dirExists(dir):
-            display("👉 \"$1\" directory is missing" % [dir.splitPath.tail], indent=2)
 
     AssetsObject.assets_paths = config.assets_paths
     config.routes = config.collectRoutes(RoutesObject, doc.get("routes"))
