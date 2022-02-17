@@ -7,6 +7,7 @@
 
 import ../http/serve
 import klymene/cli
+import klymene/util
 import ../configurator
 from strutils import `%`
 
@@ -19,6 +20,7 @@ proc runCommand*() =
         display("------------------------------------------------", indent=2, br="after")
         # display("Registered routes:", indent=2)
         # TODO list all registered routes as [VERB]  route  entry.html
+        discard cmd("open", ["http://localhost:" & $port])
         try:
             startHttpServer(Config.instance)
         except OSError:
