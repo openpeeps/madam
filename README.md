@@ -75,6 +75,13 @@ templates:
     views: "views"                  # directory path for views
     partials: "partials"            # directory path for partials
 
+
+routes:
+    get:
+        about: "about.html"
+        products/my-product: "product.html"
+        publish: "publish.html"
+
 # Define your custom Middlewares
 middlewares:
     auth: "@login.session"                                      # link to a session
@@ -114,7 +121,7 @@ _todo_
 - [ ] Talk about it on ycombinator / stackoverflow / producthunt 
 
 #### 0.2.0
-- [ ] Fake content generator
+- [ ] Fake content generator based on [Faker Nim library](https://github.com/jiro4989/faker)
 
 ### 0.3.0
 - [ ] Madam GUI
