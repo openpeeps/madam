@@ -22,7 +22,7 @@
 - [ ] Madam Skins / [Template Engine via Tim](https://github.com/openpeep/tim) for `layout`, `view`, `partials`
 - [x] Made for **Design Prototyping** and **Front-end Development**
 - [x] Works on **Linux** and **OS X**
-- [x] Open Source under `GPLv3` license
+- [x] Open Source under `MIT` license
 - [x] Pew pew pew! ZWIFF! 💋
 
 ## Why ?
@@ -135,5 +135,5 @@ If you like this project you can contribute to Madam by opening new issues, fixi
 <strong>Why Nim?</strong> Performance, fast compilation and C-like freedom. We want to keep code clean, readable, concise, and close to our intention. Also a very good language to learn in 2022.
 
 ### 🎩 License
-Madam is an Open Source Software released under `GPLv3` license. [Developed by Humans from OpenPeep](https://github.com/openpeep).<br>
+Madam is an Open Source Software released under `MIT` license. [Developed by Humans from OpenPeep](https://github.com/openpeep).<br>
 Copyright &copy; 2022 OpenPeep & Contributors &mdash; All rights reserved.
