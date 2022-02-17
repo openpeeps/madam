@@ -13,6 +13,7 @@ binDir        = "bin"
 requires "nim >= 1.6.0"
 requires "klymene"          # https://github.com/openpeep/klymene
 requires "nyml"             # https://github.com/openpeep/nyml
+requires "tim"
 
 include ./tasks/dev
 include ./tasks/prod

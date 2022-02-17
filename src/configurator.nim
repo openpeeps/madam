@@ -5,10 +5,11 @@
 # Copyright (c) 2022 George Lemon from OpenPeep
 # https://github.com/openpeep/madam
 
-import nyml
+import nyml, tim
+import ./assets, ./routes
+
 from std/os import getCurrentDir, fileExists, dirExists, normalizePath, splitFile, splitPath
 from std/strutils import `%`, replace
-import ./assets, ./routes
 from klymene/cli import display
 
 const configFile = "madam.yml"
@@ -109,7 +110,13 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         layouts_path = doc.get("templates.layouts").getStr
         views_path = doc.get("templates.views").getStr
         partials_path = doc.get("templates.partials").getStr
-    
+
+    var engine = TimEngine.init(
+            source = doc.get("path").getStr,
+            output = doc.get("path").getStr & "/storage/templates",
+            hotreload = false
+        )
+
     var
         RoutesObject = Router.init()
         AssetsObject = Assets.init()
