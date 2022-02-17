@@ -5,7 +5,7 @@
 # HTTP 1.1 server written by Dominik Picheta (MIT License)
 # https://github.com/dom96/httpbeast
 # 
-# GPLv3 License
+# MIT License
 # Copyright (c) 2022 George Lemon from OpenPeep
 # https://github.com/openpeep/madam
 
