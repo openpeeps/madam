@@ -90,26 +90,33 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         display("Generate your config with \"madam init\"", indent=2)
         quit()
     
-    let doc = Nyml(engine: Y2J).parse(readFile(configFilePath),
-        rules = @["name*:string", "path*:string", "port:int|1234", "templates*:object"])
+    var yml = Nyml.init(contents = readFile(configFilePath))
+    let doc = yml.toJson(rules = @[
+        "name*:string",
+        "path*:string",
+        "port:int|1234",
+        "templates*:object"
+    ])
 
-    if doc.hasErrorRules():
-        let count = doc.getErrorsCount()
-        let errorWord = if count == 1: "error" else: "errors"
-        display("👉 Found $1 $2 in your Madam configuration:" % [$doc.getErrorsCount(), errorWord], indent=2)
-        for key, err in doc.getErrorRules().pairs():
-            display("• " & err.getErrorMessage(), indent=2)
-        quit()
+    # TODO on Nyml
+    # if doc.hasErrorRules():
+    #     let count = doc.getErrorsCount()
+    #     let errorWord = if count == 1: "error" else: "errors"
+    #     display("👉 Found $1 $2 in your Madam configuration:" % [$doc.getErrorsCount(), errorWord], indent=2)
+    #     for key, err in doc.getErrorRules().pairs():
+    #         display("• " & err.getErrorMessage(), indent=2)
+    #     quit()
 
     let
         layouts_path = doc.get("templates.layouts").getStr
         views_path = doc.get("templates.views").getStr
         partials_path = doc.get("templates.partials").getStr
 
-    var engine = TimEngine.init(
-            source = doc.get("path").getStr,
-            output = doc.get("path").getStr & "/storage/templates",
-            hotreload = false)
+    # TODO
+    # var engine = TimEngine.init(
+    #         source = doc.get("path").getStr,
+    #         output = doc.get("path").getStr & "/storage/templates",
+    #         hotreload = false)
 
     var
         RoutesObject = Router.init()
