@@ -60,8 +60,6 @@ Run `madam init` in your project directory and setup your `madam.yml` via comman
 
 Here you can find a beautiful `madam.yml` configuration that covers all Madam features.
 
-On hold, Madam depends on 👉 [Nyml](https://github.com/openpeep/nyml) (WIP)
-
 ```yaml
 name: "Awesome Madam"
 path: "./example"                   # path to your root HTML project
@@ -84,7 +82,7 @@ routes:
 
 # Define your custom Middlewares
 middlewares:
-    auth: "@login.session"                                      # link to a session
+    auth: "@login.session"      # a fake auth middleware
 
 # Setup Static Assets to serve any kind of static files via Madam
 assets:
