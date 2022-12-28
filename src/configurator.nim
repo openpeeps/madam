@@ -91,12 +91,14 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         quit()
     
     var yml = Nyml.init(contents = readFile(configFilePath))
-    let doc = yml.toJson(rules = @[
-        "name*:string",
-        "path*:string",
-        "port:int|1234",
-        "templates*:object"
-    ])
+    # let doc = yml.toJson(rules = @[
+    #     "name*:string",
+    #     "path*:string",
+    #     "port:int|1234",
+    #     "templates*:object"
+    # ])
+
+    let doc = yml.toJson()
 
     # TODO on Nyml
     # if doc.hasErrorRules():

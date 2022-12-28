@@ -30,6 +30,9 @@ $4
 
 let args = newCommandLine(sheet, version=version, binaryName=binName)
 
-if isCommand("init", args):    init.runCommand()
-elif isCommand("run", args):   run.runCommand()
-elif isCommand("build", args): build.runCommand()
+if isCommand("init", args):
+  init.runCommand()
+elif isCommand("run", args):
+  run.runCommand()
+elif isCommand("build", args):
+  build.runCommand()

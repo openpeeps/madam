@@ -5,11 +5,12 @@
 # Copyright (c) 2022 George Lemon from OpenPeep
 # https://github.com/openpeep/madam
 
-import ../http/serve
+import ../serve
 import klymene/cli
 import klymene/util
 import ../configurator
 from strutils import `%`
+from std/os import sleep
 
 proc runCommand*() =
     let Config = Configurator.init()
@@ -20,6 +21,7 @@ proc runCommand*() =
         display("------------------------------------------------", indent=2, br="after")
         # display("Registered routes:", indent=2)
         # TODO list all registered routes as [VERB]  route  entry.html
+        sleep(200)
         discard cmd("open", ["http://localhost:" & $port])
         try:
             startHttpServer(Config.instance)

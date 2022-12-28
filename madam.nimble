@@ -11,9 +11,15 @@ binDir        = "bin"
 # Dependencies
 
 requires "nim >= 1.6.0"
-requires "klymene"          # https://github.com/openpeep/klymene
-requires "nyml"             # https://github.com/openpeep/nyml
+requires "nyml"
 requires "tim"
+requires "httpx"
+requires "klymene"
 
-include ./tasks/dev
-include ./tasks/prod
+task dev, "Compile Madam for development purposes":
+    echo "\n✨ Compiling Madam " & $version & " for dev"
+    exec "nimble build --gc:arc --threads:on"
+
+task prod, "Compile Madam for production":
+    echo "\n✨ Compiling Madam " & $version & " for prod"
+    exec "nimble build --gc:arc -d:release --threads:on --opt:size --spellSuggest"

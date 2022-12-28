@@ -9,13 +9,6 @@ templates:
 routes:
     get:
         about: "about.html"
-        # TODO Nyml Lexer/Parser
-        # allow key fields containing - / _ and 
-    post:
-        test: "asa"
-
-    connect:
-        chat: "test"
 
 # Setup Static Assets to serve any
 # kind of static files via Madam
