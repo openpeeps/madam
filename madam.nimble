@@ -14,12 +14,12 @@ requires "nim >= 1.6.0"
 requires "nyml"
 requires "tim"
 requires "httpx"
-requires "klymene"
+requires "kapsis"
 
 task dev, "Compile Madam for development purposes":
-    echo "\n✨ Compiling Madam " & $version & " for dev"
-    exec "nimble build --gc:arc --threads:on"
+  echo "\n✨ Compiling Madam " & $version & " for dev"
+  exec "nimble build --gc:arc --threads:on"
 
 task prod, "Compile Madam for production":
-    echo "\n✨ Compiling Madam " & $version & " for prod"
-    exec "nimble build --gc:arc -d:release --threads:on --opt:size --spellSuggest"
+  echo "\n✨ Compiling Madam " & $version & " for prod"
+  exec "nimble build --gc:arc -d:release --threads:on --opt:size --spellSuggest"
