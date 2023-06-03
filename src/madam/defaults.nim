@@ -92,7 +92,7 @@ const getWelcomeScreen* = """<!DOCTYPE html>
         <p style="text-align: center">🧐 Looks like you haven't created an <code>index.html</code> view, yet.</p>
         <p style="text-align: center">Need help? 👉 Check <a href="https://github.com/openpeep/madam" target="_blank">Madam on GitHub</a></p>
 
-        <p style="text-align: center; line-height:normal"><br><small>Released under <code>MIT</code> license.<br>Developed by <a href="https://github.com/openpeep">Humans from OpenPeep.</a></small></p>
+        <p style="text-align: center; line-height:normal"><br><small>Released under <code>MIT</code> license.<br>Made by <a href="https://github.com/openpeep">Humans from OpenPeep.</a></small></p>
       </div>
     </div>
   </div>

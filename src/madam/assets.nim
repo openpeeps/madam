@@ -1,7 +1,6 @@
-import std/tables
-from std/os import fileExists, getCurrentDir
-from kapsis/cli import display
-from std/strutils import strip, split
+import std/[os, tables, strutils]
+import kapsis/cli
+
 export tables
 
 type
@@ -16,16 +15,6 @@ proc init*[T: typedesc[Assets]](assets: T): Assets =
   ## Initialize a new Assets object collection
   return assets(files: initTable[string, File]())
 
-proc finder*(findArgs: seq[string] = @[], path=""): seq[string] {.thread.} =
-  ## Simple file system procedure that discovers static files in a specific directory
-  var args: seq[string] = findArgs
-  args.insert(path, 0)
-  # var files = cmd("find", args).strip()
-  # if files.len == 0:
-  #     display("Unable to find any static files.", indent=2)
-  # else:
-  #     return files.split("\n")
-
 proc hasFile*[T: Assets](assets: T, alias: string): bool =
   ## Determine if requested file exists
   if assets.files.hasKey(alias):
@@ -35,7 +24,7 @@ proc hasFile*[T: Assets](assets: T, alias: string): bool =
 proc addFile*[T: Assets](assets: var T, alias, path: string) =
   ## Add a new File object to Assets collection
   if not assets.hasFile(alias):
-    assets.files[alias] = File(alias: alias, path: path)
+    assets.files[alias] = File(alias: alias, path: normalizedPath(path))
 
 proc getFile*[T: Assets](assets: T, alias: string): string =
   ## Retrieve the contents of requested file

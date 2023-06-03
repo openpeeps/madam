@@ -1,14 +1,11 @@
-import nyml, tim
+import nyml, kapsis/cli
+import std/[strutils, os, osproc]
 import ./assets, ./routes
-
-from std/os import getCurrentDir, fileExists, dirExists, normalizePath, splitFile, splitPath
-from std/strutils import `%`, replace
-from kapsis/cli import display
 
 const configFile = "madam.yml"
 
 type
-  Configurator* = object
+  Config* = object
     name: string
     path: string
     port: int
@@ -16,67 +13,84 @@ type
     routes*: Router
     assets: Assets
     assets_paths: tuple[source, public: string]
-    console: tuple[logger, clear: bool]
+    console: tuple[browser, logger, clear: bool]
 
-proc getName*[T: Configurator](config: T): string =
+proc finder*(args: varargs[string]): seq[string] =
+  ## Simple file system procedure that discovers static files in a specific directory
+  let cmd = execCmdEx("find" & indent(args.join(" "), 1))
+  if cmd.exitCode == 0:
+    var files = cmd.output.strip()
+    if files.len == 0:
+      display("Unable to find any static files.", indent=2)
+    else:
+      return files.split("\n")
+
+proc getName*(config: Config): string =
   return config.name
 
-proc getPath*[T: Configurator](config: T, path: string): string =
+proc getPath*(config: Config, path: string): string =
   ## Return the current project path
   var filepath = getCurrentDir() & "/" & config.path
   filepath = if path.len != 0: (filepath & "/" & path) else: filepath
   filepath.normalizePath()
   return filepath
 
-proc getTemplatesPath[T: Configurator](config: T, dir: string, filePath: string): string =
+proc getTemplatesPath(config: Config, dir: string, filePath: string): string =
   ## Get absolute path from current project
   result = config.getPath(dir & filePath)
 
-proc getViewsPath*[T: Configurator](config: T, path: string = ""): string =
+proc getViewsPath*(config: Config, path: string = ""): string =
   ## Get the path that points to views directory
   return config.getTemplatesPath("views", "/" & path)
 
-proc getLayoutsPath*[T: Configurator](config: T, path: string = ""): string =
+proc getLayoutsPath*(config: Config, path: string = ""): string =
   ## Get the path that points to layouts directory
   return config.getTemplatesPath("layouts", "/" & path)
 
-proc getPartialsPath*[T: Configurator](config: T, path: string = ""): string =
+proc getPartialsPath*(config: Config, path: string = ""): string =
   ## Get the path that points to partials directory
   return config.getTemplatesPath("partials", "/" & path)
 
-proc getPort*[T: Configurator](config: T): int = config.port
-proc hasLogger*[T: Configurator](config: T): bool = config.console.logger
-proc hasClearOutput*[T: COnfigurator](config: T): bool = config.console.clear == true
+proc getPort*(config: Config): int = config.port
 
-proc getAssets*[T: Configurator](config: T): Assets =
+proc useBrowser*(config: Config): bool = config.console.browser
+proc useLogger*(config: Config): bool = config.console.logger
+proc useClear*(config: Config): bool = config.console.clear
+
+proc getAssets*(config: Config): Assets =
   return config.assets
 
-proc getAssetsPath*[T: Configurator](config: T): tuple[source: string, public: string] = config.assets_paths
+proc getAssetsPath*(config: Config): tuple[source: string, public: string] = config.assets_paths
 
-proc collectRoutes[A: Configurator, B: Router](config: var A, router: var B, routes: JsonNode): B =
-  for verb in routes.keys():
-    for route, file in routes[verb].pairs():
-      let fileName = file.getStr
-      let filePath = config.getViewsPath(fileName)
-      if verb == "get":
-        if not filePath.fileExists():
-          display("👉 \"$1\" not found. (ignored)" % [filename], indent=2)
+proc collectRoutes[A: Config, B: Router](config: var A, router: var B, routes, endpoints: JsonNode): B =
+  if routes != nil:
+    for verb in routes.keys:
+      for route, file in routes[verb].pairs:
+        let fileName = file.getStr
+        let filePath = config.getViewsPath(fileName)
+        if verb == "get":
           # TODO check file type via mimetypes
-        else: router.addRoute(verb, route, filePath)
-      else: router.addRoute(verb, route)
-  return router
+          if filePath.fileExists():
+            router.addRoute(verb, route, filePath)
+          else: 
+            display("👉 \"$1\" not found. (ignored)" % [filename], indent=2)
+        else: router.addRoute(verb, route)
+  # todo
+  # if endpoints != nil: # register endpoints for /api
+  #   for verb in endpoints.keys:
+  #     for k, route in endpoints[verb].pairs:
+  result = router
 
-proc collectAssets[A: Configurator, B: Assets](config: var A, assets: var B, assetsNode: JsonNode): B =
+proc collectAssets[A: Config, B: Assets](config: var A, assets: var B, assetsNode: JsonNode): B =
   ## Collect all static files inside assets directory
-  let files = finder(findArgs = @["-type", "f", "-print"], path = config.assets_paths.source)
-  # if files.len == 0: quit()
+  let files = finder(config.assets_paths.source, "-type f -print")
   for file in files:
     let f = splitPath(file)
     assets.addFile(f.tail, file)
   return assets
 
-proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: Configurator] =
-  ## Initialize Madam Configurator for current project
+proc newConfig*(): tuple[status: bool, instance: Config] =
+  ## Initialize Madam Config for current project
   let configFilePath = getCurrentDir() & "/" & configFile
   if not fileExists(configFilePath):
     display("👉 Missing \"$1\" in your project." % [configFile], indent=2, br="before")
@@ -113,10 +127,10 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
   #         hotreload = false)
 
   var
-    RoutesObject = Router.init()
-    AssetsObject = Assets.init()
+    routesInstance = Router.init()
+    assetsInstance = Assets.init()
     assets_source_path = getCurrentDir() & "/" & doc.get("assets.source").getStr
-    config = Configurator(
+    config = Config(
       name: doc.get("name").getStr,
       path: doc.get("path").getStr,
       port: doc.get("port").getInt,
@@ -125,13 +139,14 @@ proc init*[T: typedesc[Configurator]](config: T): tuple[status: bool, instance: 
         public: doc.get("assets.public").getStr
       ),
       console: (
-        logger: doc.get("console.logger").getBool,
-        clear: doc.get("console.clear").getBool
+        browser: doc.get("console.open-browser").getBool,
+        logger: doc.get("console.cli-logger").getBool,
+        clear: doc.get("console.cli-clear").getBool
       )
     )
 
-  AssetsObject.assets_paths = config.assets_paths
-  config.routes = config.collectRoutes(RoutesObject, doc.get("routes"))
-  config.assets = config.collectAssets(AssetsObject, doc.get("assets"))
+  assetsInstance.assets_paths = config.assets_paths
+  config.routes = config.collectRoutes(routesInstance, doc.get("routes"), doc.get("api"))
+  config.assets = config.collectAssets(assetsInstance, doc.get("assets"))
 
   return (status: true, instance: config)
